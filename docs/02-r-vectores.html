@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Ecosistema(s) espacial(es) de R</title>
+
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Trabajo con datos espaciales en R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Temas
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-r-spatial.html">Ecosistema espacial</a>
+    </li>
+    <li>
+      <a href="02-r-vectores.html">Trabajando con vectores</a>
+    </li>
+    <li>
+      <a href="03-r-rasters.html">Trabajando con raster</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/agrianalytics/agrospatial/">Repo</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Ecosistema(s) espacial(es) de R</h1>
+
+</div>
+
+
+<div id="datos-vectoriales" class="section level2">
+<h2>Datos vectoriales</h2>
+<p>Los datos vectoriales se pueden acceder como cualquier otro dato en
+R:</p>
+<ul>
+<li><p>podemos leerlos desde un archivo en nuestra computadora.</p></li>
+<li><p>podemos cargarlos con un paquete y utilizarlos.</p></li>
+</ul>
+<p>Vamos a trabajar con ambos métodos.</p>
+<div id="leyendo-datos-de-un-archivo" class="section level3">
+<h3>Leyendo datos de un archivo</h3>
+<p>Existen muchas funciones distintas para leer datos dependiendo del
+formato en el que están guardados. Para datos tabulares, la forma más
+útil es el formato csv, que es un archivo de texto plano con datos
+separados por coma.</p>
+<p>Para importar datos hace falta escribir el código correspondiente
+pero también podés aprovechar el entorno gráfico de RStudio:</p>
+<div class="alert alert-secondary">
+<p>File → Import Dataset → From Text (readr)…</p>
+</div>
+<p>Esto te va abrir una ventana donde podrás elegir el archivo a
+importar (en este caso el archivo <code>estaciones_smn.csv</code> que
+está dentro de la capeta <code>datos</code> del proyecto) y otros
+detalles.</p>
+<p><img src="img/leer_csv.png" alt="Diálogo de importar datos de RStudio." width="350" /></p>
+<p>En la pantalla principal vas a poder previsualizar los datos. Abajo a
+la izquierda tenés varias opciones: el nombre que vas a usar para la
+variable (en este caso llamaremos <code>estaciones_smn</code>), si la
+primera fila contiene los nombres de las columnas
+(<code>First Row as Names</code>), qué delimitador tienen los datos (en
+este caso <code>comma</code>, pero podría ser punto y coma u otro),
+etc…</p>
+<p>Y abajo a la derecha es el código que vas a necesitar para
+efectivamente importar los datos. Podrías apretar el botón “Import” para
+leer los datos pero si bien es posible, al mismo tiempo esas líneas de
+código no se guardan en ningún lado y entonces nuestro trabajo luego no
+se puede reproducir. Por eso, te proponemos que copies ese código,
+cierres esa ventana con el botón “Cancel”, y pegues el código en el
+archivo donde estés trabajando. Cuando lo ejecutes, se va a generar la
+variable <code>estaciones_smn</code> con los datos.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>estaciones_smn <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;datos/estaciones_smn.csv&quot;</span>) </span></code></pre></div>
+<pre><code>## Rows: 117 Columns: 5
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): nombre, provincia
+## dbl (3): lon, lat, altua
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="alert alert-success">
+<p><strong>Nota</strong>: Notá que en este caso el código para leer los
+datos consta de dos líneas. La primera carga el paquete
+<strong>readr</strong> y el segundo usa la función
+<code>read_csv()</code> (del paquete readr) para leer el archivo .csv.
+No es necesario cargar el paquete cada vez que vas a leer un archivo,
+pero asegurate de incluir esta línea en el primer bloque de código de tu
+archivo.</p>
+</div>
+<div class="alert alert-success">
+<p><strong>Nota</strong>: La interfaz de usuario de RStudio sirve para
+autogenerar el código que lee el archivo. Una vez que lo tenés, no
+necesitás abrirla de nuevo.</p>
+</div>
+<p>Todo ese texto naranja/rojo es intimidante pero no te preocupes, es
+sólo un mensaje que nos informa que los datos se leyeron y qué tipo de
+dato tiene cada columna. Podemos explorar la estructura de la variable
+<code>estaciones_smn</code> usando la función <code>str()</code> (de
+<em>structure</em> en inglés).</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">str</span>(estaciones_smn)</span></code></pre></div>
+<pre><code>## spc_tbl_ [117 × 5] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ nombre   : chr [1:117] &quot;AZUL AERO&quot; &quot;BAHIA BLANCA AERO&quot; &quot;BENITO JUAREZ AERO&quot; &quot;BOLIVAR AERO&quot; ...
+##  $ provincia: chr [1:117] &quot;BUENOS AIRES&quot; &quot;BUENOS AIRES&quot; &quot;BUENOS AIRES&quot; &quot;BUENOS AIRES&quot; ...
+##  $ lon      : num [1:117] -59.9 -62.2 -59.8 -61.1 -58.7 ...
+##  $ lat      : num [1:117] -36.8 -38.7 -37.7 -36.2 -34.5 ...
+##  $ altua    : num [1:117] 147 83 207 94 26 247 233 9 12 20 ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   nombre = col_character(),
+##   ..   provincia = col_character(),
+##   ..   lon = col_double(),
+##   ..   lat = col_double(),
+##   ..   altua = col_double()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<p>Esto nos dice un montón. La primera línea dice que es una
+<code>tibble</code>, que es un caso especial de la estructura de datos
+tabular básica de R llamada <code>data.frame</code>. Tiene 117 filas
+(las <strong>observaciones</strong>) y 5 columnas (o
+<strong>variables</strong> que describen las observaciones). Las
+siguientes líneas nos dicen los nombres de las columnas (nombre,
+provincia, lon, lat, y altua), su tipo de dato (<code>chr</code> o
+<code>num</code>), la longitud ([1:117]) y sus primeros elementos.</p>
+<p>Podemos ver que esta tabla tiene dos variables que indican la latitud
+y longitud de cada fila. En este caso estamos ante un tipo de dato
+vectorial de puntos.</p>
+<p>Para poder graficarlos vamos a utilizar el paquete {ggplot2} que
+permite generar gráficos de gran calidad en pocos pasos. Pero antes de
+graficar, veamos otra manera de leer datos vectoriales.</p>
+</div>
+<div id="usando-un-paquete-natural-earth-datos-del-mundo."
+class="section level3">
+<h3>Usando un paquete: Natural Earth, datos del mundo.</h3>
+<p>{rnaturalearth} es un paquete de R para mantener y facilitar la
+interacción con los datos de los mapas vectoriales de la <a
+href="http://www.naturalearthdata.com/">tierra natural</a> un conjunto
+de datos cartográficos de dominio público que incluye vectores de países
+y otras fronteras administrativas.</p>
+<p>Es muy útil para confeccionar mapas base, por ejemplo, para graficar
+el mapa de Argentina y sus países limítrofes cargamos los datos con
+<code>ne_countries()</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>mapa <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">country =</span> <span class="fu">c</span>(<span class="st">&quot;argentina&quot;</span>, <span class="st">&quot;chile&quot;</span>, <span class="st">&quot;uruguay&quot;</span>, </span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>                                                <span class="st">&quot;paraguay&quot;</span>, <span class="st">&quot;brazil&quot;</span>, <span class="st">&quot;bolivia&quot;</span>, </span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>                                                <span class="st">&quot;falkland islands&quot;</span>), </span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>                                    <span class="at">returnclass =</span> <span class="st">&quot;sf&quot;</span>)</span></code></pre></div>
+<p>El argumento <code>country</code> es un vector con los países que
+necesitamos. El argumento <code>returnclass</code> hace referencia a la
+estructura que queremos que devuelva. En este caso,
+<code>returnclass = "sf"</code> hace que devuelva un objeto de clase
+“Simple Features”. Este tipo de dato también se pueden graficar con
+{ggplot2}.</p>
+<p>Veamos el contenido de mapa</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">str</span>(mapa)</span></code></pre></div>
+<pre><code>## Classes &#39;sf&#39; and &#39;data.frame&#39;:   7 obs. of  169 variables:
+##  $ featurecla: chr  &quot;Admin-0 country&quot; &quot;Admin-0 country&quot; &quot;Admin-0 country&quot; &quot;Admin-0 country&quot; ...
+##  $ scalerank : int  1 1 1 1 1 1 1
+##  $ labelrank : int  2 2 5 4 2 3 4
+##  $ sovereignt: chr  &quot;Argentina&quot; &quot;Chile&quot; &quot;United Kingdom&quot; &quot;Uruguay&quot; ...
+##  $ sov_a3    : chr  &quot;ARG&quot; &quot;CHL&quot; &quot;GB1&quot; &quot;URY&quot; ...
+##  $ adm0_dif  : int  0 0 1 0 0 0 0
+##  $ level     : int  2 2 2 2 2 2 2
+##  $ type      : chr  &quot;Sovereign country&quot; &quot;Sovereign country&quot; &quot;Disputed&quot; &quot;Sovereign country&quot; ...
+##  $ tlc       : chr  &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; ...
+##  $ admin     : chr  &quot;Argentina&quot; &quot;Chile&quot; &quot;Falkland Islands&quot; &quot;Uruguay&quot; ...
+##  $ adm0_a3   : chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ geou_dif  : int  0 0 0 0 0 0 0
+##  $ geounit   : chr  &quot;Argentina&quot; &quot;Chile&quot; &quot;Falkland Islands&quot; &quot;Uruguay&quot; ...
+##  $ gu_a3     : chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ su_dif    : int  0 0 0 0 0 0 0
+##  $ subunit   : chr  &quot;Argentina&quot; &quot;Chile&quot; &quot;Falkland Islands&quot; &quot;Uruguay&quot; ...
+##  $ su_a3     : chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ brk_diff  : int  0 0 1 0 0 0 0
+##  $ name      : chr  &quot;Argentina&quot; &quot;Chile&quot; &quot;Falkland Is.&quot; &quot;Uruguay&quot; ...
+##  $ name_long : chr  &quot;Argentina&quot; &quot;Chile&quot; &quot;Falkland Islands / Malvinas&quot; &quot;Uruguay&quot; ...
+##  $ brk_a3    : chr  &quot;ARG&quot; &quot;CHL&quot; &quot;B12&quot; &quot;URY&quot; ...
+##  $ brk_name  : chr  &quot;Argentina&quot; &quot;Chile&quot; &quot;Falkland Is.&quot; &quot;Uruguay&quot; ...
+##  $ brk_group : chr  NA NA NA NA ...
+##  $ abbrev    : chr  &quot;Arg.&quot; &quot;Chile&quot; &quot;Flk. Is.&quot; &quot;Ury.&quot; ...
+##  $ postal    : chr  &quot;AR&quot; &quot;CL&quot; &quot;FK&quot; &quot;UY&quot; ...
+##  $ formal_en : chr  &quot;Argentine Republic&quot; &quot;Republic of Chile&quot; &quot;Falkland Islands&quot; &quot;Oriental Republic of Uruguay&quot; ...
+##  $ formal_fr : chr  NA NA NA NA ...
+##  $ name_ciawf: chr  &quot;Argentina&quot; &quot;Chile&quot; &quot;Falkland Islands (Islas Malvinas)&quot; &quot;Uruguay&quot; ...
+##  $ note_adm0 : chr  NA NA &quot;U.K.&quot; NA ...
+##  $ note_brk  : chr  NA NA &quot;Admin. by U.K.; Claimed by Argentina&quot; NA ...
+##  $ name_sort : chr  &quot;Argentina&quot; &quot;Chile&quot; &quot;Falkland Islands&quot; &quot;Uruguay&quot; ...
+##  $ name_alt  : chr  NA NA &quot;Islas Malvinas&quot; NA ...
+##  $ mapcolor7 : int  3 5 6 1 5 1 6
+##  $ mapcolor8 : int  1 1 6 2 6 5 3
+##  $ mapcolor9 : int  3 5 6 2 5 2 6
+##  $ mapcolor13: int  13 9 3 10 7 3 2
+##  $ pop_est   : num  4.49e+07 1.90e+07 3.40e+03 3.46e+06 2.11e+08 ...
+##  $ pop_rank  : int  15 14 4 12 17 14 13
+##  $ pop_year  : int  2019 2019 2016 2019 2019 2019 2019
+##  $ gdp_md    : int  445445 282318 282 56045 1839758 40895 38145
+##  $ gdp_year  : int  2019 2019 2012 2019 2019 2019 2019
+##  $ economy   : chr  &quot;5. Emerging region: G20&quot; &quot;5. Emerging region: G20&quot; &quot;2. Developed region: nonG7&quot; &quot;5. Emerging region: G20&quot; ...
+##  $ income_grp: chr  &quot;3. Upper middle income&quot; &quot;3. Upper middle income&quot; &quot;1. High income: OECD&quot; &quot;3. Upper middle income&quot; ...
+##  $ fips_10   : chr  &quot;AR&quot; &quot;CI&quot; &quot;FK&quot; &quot;UY&quot; ...
+##  $ iso_a2    : chr  &quot;AR&quot; &quot;CL&quot; &quot;FK&quot; &quot;UY&quot; ...
+##  $ iso_a2_eh : chr  &quot;AR&quot; &quot;CL&quot; &quot;FK&quot; &quot;UY&quot; ...
+##  $ iso_a3    : chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ iso_a3_eh : chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ iso_n3    : chr  &quot;032&quot; &quot;152&quot; &quot;238&quot; &quot;858&quot; ...
+##  $ iso_n3_eh : chr  &quot;032&quot; &quot;152&quot; &quot;238&quot; &quot;858&quot; ...
+##  $ un_a3     : chr  &quot;032&quot; &quot;152&quot; &quot;238&quot; &quot;858&quot; ...
+##  $ wb_a2     : chr  &quot;AR&quot; &quot;CL&quot; &quot;-99&quot; &quot;UY&quot; ...
+##  $ wb_a3     : chr  &quot;ARG&quot; &quot;CHL&quot; &quot;-99&quot; &quot;URY&quot; ...
+##  $ woe_id    : int  23424747 23424782 23424814 23424979 23424768 23424762 23424917
+##  $ woe_id_eh : int  23424747 23424782 23424814 23424979 23424768 23424762 23424917
+##  $ woe_note  : chr  &quot;Exact WOE match as country&quot; &quot;Exact WOE match as country&quot; &quot;Exact WOE match as country&quot; &quot;Exact WOE match as country&quot; ...
+##  $ adm0_iso  : chr  &quot;ARG&quot; &quot;CHL&quot; &quot;B12&quot; &quot;URY&quot; ...
+##  $ adm0_diff : chr  NA NA NA NA ...
+##  $ adm0_tlc  : chr  &quot;ARG&quot; &quot;CHL&quot; &quot;B12&quot; &quot;URY&quot; ...
+##  $ adm0_a3_us: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_fr: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_ru: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_es: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_cn: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_tw: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_in: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_np: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_pk: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_de: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_gb: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_br: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_il: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_ps: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_sa: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_eg: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_ma: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_pt: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_ar: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;ARG&quot; &quot;URY&quot; ...
+##  $ adm0_a3_jp: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_ko: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_vn: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_tr: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_id: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_pl: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_gr: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_it: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_nl: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_se: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_bd: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_ua: chr  &quot;ARG&quot; &quot;CHL&quot; &quot;FLK&quot; &quot;URY&quot; ...
+##  $ adm0_a3_un: int  -99 -99 -99 -99 -99 -99 -99
+##  $ adm0_a3_wb: int  -99 -99 -99 -99 -99 -99 -99
+##  $ continent : chr  &quot;South America&quot; &quot;South America&quot; &quot;South America&quot; &quot;South America&quot; ...
+##  $ region_un : chr  &quot;Americas&quot; &quot;Americas&quot; &quot;Americas&quot; &quot;Americas&quot; ...
+##  $ subregion : chr  &quot;South America&quot; &quot;South America&quot; &quot;South America&quot; &quot;South America&quot; ...
+##  $ region_wb : chr  &quot;Latin America &amp; Caribbean&quot; &quot;Latin America &amp; Caribbean&quot; &quot;Latin America &amp; Caribbean&quot; &quot;Latin America &amp; Caribbean&quot; ...
+##  $ name_len  : int  9 5 12 7 6 7 8
+##  $ long_len  : int  9 5 27 7 6 7 8
+##  $ abbrev_len: int  4 5 8 4 6 7 5
+##   [list output truncated]
+##  - attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;
+##  - attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA NA NA NA NA NA NA NA ...
+##   ..- attr(*, &quot;names&quot;)= chr [1:168] &quot;featurecla&quot; &quot;scalerank&quot; NA NA ...</code></pre>
+<p>Vemos que tiene muchas más variables, hacia el final de los datos
+podemos ver que se indica que hay una clase <em>“MULTIPOLYGON”</em></p>
+</div>
+</div>
+<div id="graficando" class="section level2">
+<h2>Graficando</h2>
+<p>Ahora si veamos como podemos generar un mapa con los puntos y los
+polígonos que obtuvimos en los pasos anteriors.</p>
+<p>Cualquier gráfico de ggplot tendrá como mínimo 3 componentes: los
+<strong>datos</strong>, un <strong>sistema de coordenadas</strong> y una
+<strong>geometría</strong> (la representación visual de los datos) y se
+irá construyendo por capas.</p>
+</div>
+<div id="primera-capa-el-área-del-gráfico" class="section level2">
+<h2>Primera capa: el área del gráfico</h2>
+<p>La función principal de {ggplot2} es justamente <code>ggplot()</code>
+que permite <em>iniciar</em> el gráfico y además definir las
+características <em>globales</em>. El primer argumento de esta función
+serán los datos que vas a visualizar, siempre en un data frame. En este
+caso usamos <code>estaciones_smn</code>.</p>
+<p>El segundo argumento se llama “mapping” (<em>mapeo</em> en inglés).
+Este argumento define la relación entre cada columna del data frame y
+los distintos parámetros gráficos. Por ejemplo, qué columna va a
+representar el eje x, cuál va a ser el eje y, etc. Este mapeo se hace
+<strong>siempre</strong> con la función <code>aes()</code> (que viene de
+<em>aesthetics</em>, <em>estética</em> en inglés).</p>
+<p>Por ejemplo, si queremos hacer un gráfico que muestre la ubicación de
+las estaciones usarías algo como esto:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> estaciones_smn, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> lon, <span class="at">y =</span> lat)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">geom_point</span>()  </span></code></pre></div>
+<p><img src="02-r-vectores_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Este código le indica a ggplot que genere un gráfico donde el eje
+<strong>x</strong> se mapea a la columna <code>lon</code> y el eje
+<strong>y</strong>, a la columna <code>lat</code>. Para representar los
+datos usando puntos, hay que usar <code>geom_point()</code></p>
+<p>¡Nuestro primer mapa! … casi ….</p>
+<p>Ahora veamos como se grafican los polígonos teniendo en cuenta lo que
+aprendimos recien. Los datos de los polígonos están en <code>mapa</code>
+y sabemos que es del tipo <code>sf</code>, asi que buscamos una
+geometría que nos permita graficar ese tipo de datos, de esta
+manera:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">ggplot</span>(mapa) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span></code></pre></div>
+<p><img src="02-r-vectores_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Por defecto, el mapa se dibuja con un fondo gris, pero el problema es
+que ese fondo puede tapar los datos de puntos de las estaciones. Para
+para dibujar sólo los contornos hay que modificar la geometría un
+poco:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">ggplot</span>(mapa) <span class="sc">+</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code></pre></div>
+<p><img src="02-r-vectores_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Ahora vamos a juntar los dos mapas: el de puntos y el de
+polígonos</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">ggplot</span>(mapa) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> estaciones_smn, <span class="at">mapping =</span> <span class="fu">aes</span>(lon, lat)) </span></code></pre></div>
+<p><img src="02-r-vectores_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Finalmente, podemos restringir el área del mapa para que se muestre
+solo donde hay datos:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">ggplot</span>(mapa) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> estaciones_smn, <span class="at">mapping =</span> <span class="fu">aes</span>(lon, lat)) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">55</span>, <span class="sc">-</span><span class="dv">20</span>), <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">80</span>, <span class="sc">-</span><span class="dv">50</span>))</span></code></pre></div>
+<p><img src="02-r-vectores_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="alert alert-info">
+<p><strong>Desafío</strong></p>
+<p>Intentá replicar este mismo mapa pero con los datos que están en el
+archivo <em>estaciones_siga.csv</em> dentro de la carpeta datos del
+proyecto.</p>
+</div>
+<div id="leyendo-un-archivo-shape" class="section level3">
+<h3>Leyendo un archivo shape</h3>
+<p>El formato <em>ESRI Shapefile</em> es uno de los formatos mas comunes
+de informacion geografica vectorial. La mayoria de las Infraestructuras
+de Datos Espaciales (IDEs) nos permiten acceder a diversas capas de
+informacion en este formato. Una de esas IDE es la del <a
+href="https://www.ign.gob.ar/NuestrasActividades/InformacionGeoespacial/CapasSIG">Instituto
+Geografico Nacional</a> y otra es la del <a
+href="https://geo-backend.inta.gob.ar/catalogue/">Instituto Nacional de
+Tecnologia Agropecuaria</a>.</p>
+<p>De este ultimo descargue el atlas de suelos de Argentina en escala
+1:500.000 que vamos a leer usando la funcion <code>vect</code> del
+paquete <code>terra</code> y la funcion <code>st_as_sf</code> el paquete
+<code>sf</code> para transformar del formato de terra a sf que necesita
+ggplot para poder graficar:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">library</span>(terra)</span></code></pre></div>
+<pre><code>## terra 1.7.78</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code></pre></div>
+<pre><code>## Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>suelos <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="st">&quot;datos/suelos_argentina_1_500&quot;</span>) </span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>suelos_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(suelos)</span></code></pre></div>
+<p>Ahora podemos graficar diferentes mapas de Argentina a partir de las
+caracteristicas de los suelos. Vamos a asocial la variable
+<code>orden_sue3</code> para que cada categoria tenga un color
+diferente.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">ggplot</span>(suelos_sf) <span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> orden_sue3)) <span class="sc">+</span>  </span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Unidades de tipos de suelos de Argentina&quot;</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">&quot;Suelos&quot;</span>) </span></code></pre></div>
+<p><img src="02-r-vectores_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRWNvc2lzdGVtYShzKSBlc3BhY2lhbChlcykgZGUgUiIKb3V0cHV0OiAKICBodG1sX2RvY3VtZW50OgogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgaGlnaGxpZ2h0OiB0YW5nbwotLS0KCiMjIERhdG9zIHZlY3RvcmlhbGVzCgpMb3MgZGF0b3MgdmVjdG9yaWFsZXMgc2UgcHVlZGVuIGFjY2VkZXIgY29tbyBjdWFscXVpZXIgb3RybyBkYXRvIGVuIFI6CgoqIHBvZGVtb3MgbGVlcmxvcyBkZXNkZSB1biBhcmNoaXZvIGVuIG51ZXN0cmEgY29tcHV0YWRvcmEuCgoqIHBvZGVtb3MgY2FyZ2FybG9zIGNvbiB1biBwYXF1ZXRlIHkgdXRpbGl6YXJsb3MuCgpWYW1vcyBhIHRyYWJhamFyIGNvbiBhbWJvcyBtw6l0b2Rvcy4KCgojIyMgTGV5ZW5kbyBkYXRvcyBkZSB1biBhcmNoaXZvCgpFeGlzdGVuIG11Y2hhcyBmdW5jaW9uZXMgZGlzdGludGFzIHBhcmEgbGVlciBkYXRvcyBkZXBlbmRpZW5kbyBkZWwgZm9ybWF0byBlbiBlbCBxdWUgZXN0w6FuIGd1YXJkYWRvcy4KUGFyYSBkYXRvcyB0YWJ1bGFyZXMsIGxhIGZvcm1hIG3DoXMgw7p0aWwgZXMgZWwgZm9ybWF0byBjc3YsIHF1ZSBlcyB1biBhcmNoaXZvIGRlIHRleHRvIHBsYW5vIGNvbiBkYXRvcyBzZXBhcmFkb3MgcG9yIGNvbWEuCgpQYXJhIGltcG9ydGFyIGRhdG9zIGhhY2UgZmFsdGEgZXNjcmliaXIgZWwgY8OzZGlnbyBjb3JyZXNwb25kaWVudGUgcGVybyB0YW1iacOpbiBwb2TDqXMgYXByb3ZlY2hhciBlbCBlbnRvcm5vIGdyw6FmaWNvIGRlIFJTdHVkaW86Cgo6Ojogey5hbGVydCAuYWxlcnQtc2Vjb25kYXJ5fQpGaWxlIOKGkiBJbXBvcnQgRGF0YXNldCDihpIgRnJvbSBUZXh0IChyZWFkcikuLi4KOjo6CgpFc3RvIHRlIHZhIGFicmlyIHVuYSB2ZW50YW5hIGRvbmRlIHBvZHLDoXMgZWxlZ2lyIGVsIGFyY2hpdm8gYSBpbXBvcnRhciAoZW4gZXN0ZSBjYXNvIGVsIGFyY2hpdm8gYGVzdGFjaW9uZXNfc21uLmNzdmAgcXVlIGVzdMOhIGRlbnRybyBkZSBsYSBjYXBldGEgYGRhdG9zYCBkZWwgcHJveWVjdG8pIHkgb3Ryb3MgZGV0YWxsZXMuCgpgYGB7ciwgZWNobz1GQUxTRSwgZmlnLmFsdCA9ICJEacOhbG9nbyBkZSBpbXBvcnRhciBkYXRvcyBkZSBSU3R1ZGlvLiJ9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKCJpbWcvbGVlcl9jc3YucG5nIikKYGBgCgpFbiBsYSBwYW50YWxsYSBwcmluY2lwYWwgdmFzIGEgcG9kZXIgcHJldmlzdWFsaXphciBsb3MgZGF0b3MuCkFiYWpvIGEgbGEgaXpxdWllcmRhIHRlbsOpcyB2YXJpYXMgb3BjaW9uZXM6IGVsIG5vbWJyZSBxdWUgdmFzIGEgdXNhciBwYXJhIGxhIHZhcmlhYmxlIChlbiBlc3RlIGNhc28gbGxhbWFyZW1vcyBgZXN0YWNpb25lc19zbW5gKSwgc2kgbGEgcHJpbWVyYSBmaWxhIGNvbnRpZW5lIGxvcyBub21icmVzIGRlIGxhcyBjb2x1bW5hcyAoYEZpcnN0IFJvdyBhcyBOYW1lc2ApLCBxdcOpIGRlbGltaXRhZG9yIHRpZW5lbiBsb3MgZGF0b3MgKGVuIGVzdGUgY2FzbyBgY29tbWFgLCBwZXJvIHBvZHLDrWEgc2VyIHB1bnRvIHkgY29tYSB1IG90cm8pLCBldGMuLi4KClkgYWJham8gYSBsYSBkZXJlY2hhIGVzIGVsIGPDs2RpZ28gcXVlIHZhcyBhIG5lY2VzaXRhciBwYXJhIGVmZWN0aXZhbWVudGUgaW1wb3J0YXIgbG9zIGRhdG9zLgpQb2Ryw61hcyBhcHJldGFyIGVsIGJvdMOzbiAiSW1wb3J0IiBwYXJhIGxlZXIgbG9zIGRhdG9zIHBlcm8gc2kgYmllbiBlcyBwb3NpYmxlLCBhbCBtaXNtbyB0aWVtcG8gZXNhcyBsw61uZWFzIGRlIGPDs2RpZ28gbm8gc2UgZ3VhcmRhbiBlbiBuaW5nw7puIGxhZG8geSBlbnRvbmNlcyBudWVzdHJvIHRyYWJham8gbHVlZ28gbm8gc2UgcHVlZGUgcmVwcm9kdWNpci4KUG9yIGVzbywgdGUgcHJvcG9uZW1vcyBxdWUgY29waWVzIGVzZSBjw7NkaWdvLCBjaWVycmVzIGVzYSB2ZW50YW5hIGNvbiBlbCBib3TDs24gIkNhbmNlbCIsIHkgcGVndWVzIGVsIGPDs2RpZ28gZW4gZWwgYXJjaGl2byBkb25kZSBlc3TDqXMgdHJhYmFqYW5kby4KQ3VhbmRvIGxvIGVqZWN1dGVzLCBzZSB2YSBhIGdlbmVyYXIgbGEgdmFyaWFibGUgYGVzdGFjaW9uZXNfc21uYCBjb24gbG9zIGRhdG9zLgoKYGBge3J9CmxpYnJhcnkocmVhZHIpCgplc3RhY2lvbmVzX3NtbiA8LSByZWFkX2NzdigiZGF0b3MvZXN0YWNpb25lc19zbW4uY3N2IikgCmBgYAoKOjo6IHsuYWxlcnQgLmFsZXJ0LXN1Y2Nlc3N9CioqTm90YSoqOiBOb3TDoSBxdWUgZW4gZXN0ZSBjYXNvIGVsIGPDs2RpZ28gcGFyYSBsZWVyIGxvcyBkYXRvcyBjb25zdGEgZGUgZG9zIGzDrW5lYXMuCkxhIHByaW1lcmEgY2FyZ2EgZWwgcGFxdWV0ZSAqKnJlYWRyKiogeSBlbCBzZWd1bmRvIHVzYSBsYSBmdW5jacOzbiBgcmVhZF9jc3YoKWAgKGRlbCBwYXF1ZXRlIHJlYWRyKSBwYXJhIGxlZXIgZWwgYXJjaGl2byAuY3N2LgpObyBlcyBuZWNlc2FyaW8gY2FyZ2FyIGVsIHBhcXVldGUgY2FkYSB2ZXogcXVlIHZhcyBhIGxlZXIgdW4gYXJjaGl2bywgcGVybyBhc2VndXJhdGUgZGUgaW5jbHVpciBlc3RhIGzDrW5lYSBlbiBlbCBwcmltZXIgYmxvcXVlIGRlIGPDs2RpZ28gZGUgdHUgYXJjaGl2by4KOjo6CgoKOjo6IHsuYWxlcnQgLmFsZXJ0LXN1Y2Nlc3N9CioqTm90YSoqOiBMYSBpbnRlcmZheiBkZSB1c3VhcmlvIGRlIFJTdHVkaW8gc2lydmUgcGFyYSBhdXRvZ2VuZXJhciBlbCBjw7NkaWdvIHF1ZSBsZWUgZWwgYXJjaGl2by4KVW5hIHZleiBxdWUgbG8gdGVuw6lzLCBubyBuZWNlc2l0w6FzIGFicmlybGEgZGUgbnVldm8uCjo6OgoKVG9kbyBlc2UgdGV4dG8gbmFyYW5qYS9yb2pvIGVzIGludGltaWRhbnRlIHBlcm8gbm8gdGUgcHJlb2N1cGVzLCBlcyBzw7NsbyB1biBtZW5zYWplIHF1ZSBub3MgaW5mb3JtYSBxdWUgbG9zIGRhdG9zIHNlIGxleWVyb24geSBxdcOpIHRpcG8gZGUgZGF0byB0aWVuZSBjYWRhIGNvbHVtbmEuClBvZGVtb3MgZXhwbG9yYXIgbGEgZXN0cnVjdHVyYSBkZSBsYSB2YXJpYWJsZSBgZXN0YWNpb25lc19zbW5gIHVzYW5kbyBsYSBmdW5jacOzbiBgc3RyKClgIChkZSAqc3RydWN0dXJlKiBlbiBpbmdsw6lzKS4KCmBgYHtyfQpzdHIoZXN0YWNpb25lc19zbW4pCmBgYAoKRXN0byBub3MgZGljZSB1biBtb250w7NuLgpMYSBwcmltZXJhIGzDrW5lYSBkaWNlIHF1ZSBlcyB1bmEgYHRpYmJsZWAsIHF1ZSBlcyB1biBjYXNvIGVzcGVjaWFsIGRlIGxhIGVzdHJ1Y3R1cmEgZGUgZGF0b3MgdGFidWxhciBiw6FzaWNhIGRlIFIgbGxhbWFkYSBgZGF0YS5mcmFtZWAuClRpZW5lIGByIG5yb3coZXN0YWNpb25lc19zbW4pYCBmaWxhcyAobGFzICoqb2JzZXJ2YWNpb25lcyoqKSB5IGByIG5jb2woZXN0YWNpb25lc19zbW4pYCBjb2x1bW5hcyAobyAqKnZhcmlhYmxlcyoqIHF1ZSBkZXNjcmliZW4gbGFzIG9ic2VydmFjaW9uZXMpLgpMYXMgc2lndWllbnRlcyBsw61uZWFzIG5vcyBkaWNlbiBsb3Mgbm9tYnJlcyBkZSBsYXMgY29sdW1uYXMgKGByIGtuaXRyOjpjb21iaW5lX3dvcmRzKGNvbG5hbWVzKGVzdGFjaW9uZXNfc21uKSwgYW5kID0gInkgIilgKSwgc3UgdGlwbyBkZSBkYXRvIChgY2hyYCBvIGBudW1gKSwgbGEgbG9uZ2l0dWQgKGByIHBhc3RlMCgiWzE6IiwgbnJvdyhlc3RhY2lvbmVzX3NtbiksICJdIilgKSB5IHN1cyBwcmltZXJvcyBlbGVtZW50b3MuCgpQb2RlbW9zIHZlciBxdWUgZXN0YSB0YWJsYSB0aWVuZSBkb3MgdmFyaWFibGVzIHF1ZSBpbmRpY2FuIGxhIGxhdGl0dWQgeSBsb25naXR1ZCBkZSBjYWRhIGZpbGEuICBFbiBlc3RlIGNhc28gZXN0YW1vcyBhbnRlIHVuIHRpcG8gZGUgZGF0byB2ZWN0b3JpYWwgZGUgcHVudG9zLgoKUGFyYSBwb2RlciBncmFmaWNhcmxvcyB2YW1vcyBhIHV0aWxpemFyIGVsIHBhcXVldGUge2dncGxvdDJ9IHF1ZSBwZXJtaXRlIGdlbmVyYXIgZ3LDoWZpY29zIGRlIGdyYW4gY2FsaWRhZCBlbiBwb2NvcyBwYXNvcy4gIFBlcm8gYW50ZXMgZGUgZ3JhZmljYXIsIHZlYW1vcyBvdHJhIG1hbmVyYSBkZSBsZWVyIGRhdG9zIHZlY3RvcmlhbGVzLgoKIyMjIFVzYW5kbyB1biBwYXF1ZXRlOiBOYXR1cmFsIEVhcnRoLCBkYXRvcyBkZWwgbXVuZG8uCgp7cm5hdHVyYWxlYXJ0aH0gZXMgdW4gcGFxdWV0ZSBkZSBSIHBhcmEgbWFudGVuZXIgeSBmYWNpbGl0YXIgbGEgaW50ZXJhY2Npw7NuIGNvbiBsb3MgZGF0b3MgZGUgbG9zIG1hcGFzIHZlY3RvcmlhbGVzIGRlIGxhIFt0aWVycmEgbmF0dXJhbF0oaHR0cDovL3d3dy5uYXR1cmFsZWFydGhkYXRhLmNvbS8pIHVuIGNvbmp1bnRvIGRlIGRhdG9zIGNhcnRvZ3LDoWZpY29zIGRlIGRvbWluaW8gcMO6YmxpY28gcXVlIGluY2x1eWUgdmVjdG9yZXMgZGUgcGHDrXNlcyB5IG90cmFzIGZyb250ZXJhcyBhZG1pbmlzdHJhdGl2YXMuCgpFcyBtdXkgw7p0aWwgcGFyYSBjb25mZWNjaW9uYXIgbWFwYXMgYmFzZSwgcG9yIGVqZW1wbG8sIHBhcmEgZ3JhZmljYXIgZWwgbWFwYSBkZSBBcmdlbnRpbmEgeSBzdXMgcGHDrXNlcyBsaW3DrXRyb2ZlcyBjYXJnYW1vcyBsb3MgZGF0b3MgY29uIGBuZV9jb3VudHJpZXMoKWA6CgpgYGB7cn0KbGlicmFyeShybmF0dXJhbGVhcnRoKQoKbWFwYSA8LSBuZV9jb3VudHJpZXMoY291bnRyeSA9IGMoImFyZ2VudGluYSIsICJjaGlsZSIsICJ1cnVndWF5IiwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJwYXJhZ3VheSIsICJicmF6aWwiLCAiYm9saXZpYSIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiZmFsa2xhbmQgaXNsYW5kcyIpLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuY2xhc3MgPSAic2YiKQpgYGAKCkVsIGFyZ3VtZW50byBgY291bnRyeWAgZXMgdW4gdmVjdG9yIGNvbiBsb3MgcGHDrXNlcyBxdWUgbmVjZXNpdGFtb3MuIEVsIGFyZ3VtZW50byBgcmV0dXJuY2xhc3NgIGhhY2UgcmVmZXJlbmNpYSBhIGxhIGVzdHJ1Y3R1cmEgcXVlIHF1ZXJlbW9zIHF1ZSBkZXZ1ZWx2YS4gRW4gZXN0ZSBjYXNvLCBgcmV0dXJuY2xhc3MgPSAic2YiYCBoYWNlIHF1ZSBkZXZ1ZWx2YSB1biBvYmpldG8gZGUgY2xhc2UgIlNpbXBsZSBGZWF0dXJlcyIuIEVzdGUgdGlwbyBkZSBkYXRvIHRhbWJpw6luIHNlIHB1ZWRlbiBncmFmaWNhciBjb24ge2dncGxvdDJ9LgoKVmVhbW9zIGVsIGNvbnRlbmlkbyBkZSBtYXBhCgpgYGB7cn0Kc3RyKG1hcGEpCmBgYApWZW1vcyBxdWUgdGllbmUgbXVjaGFzIG3DoXMgdmFyaWFibGVzLCBoYWNpYSBlbCBmaW5hbCBkZSBsb3MgZGF0b3MgcG9kZW1vcyB2ZXIgcXVlIHNlIGluZGljYSBxdWUgaGF5IHVuYSBjbGFzZSBfIk1VTFRJUE9MWUdPTiJfIAoKCiMjIEdyYWZpY2FuZG8KCkFob3JhIHNpIHZlYW1vcyBjb21vIHBvZGVtb3MgZ2VuZXJhciB1biBtYXBhIGNvbiBsb3MgcHVudG9zIHkgbG9zIHBvbMOtZ29ub3MgcXVlIG9idHV2aW1vcyBlbiBsb3MgcGFzb3MgYW50ZXJpb3JzLgoKQ3VhbHF1aWVyIGdyw6FmaWNvIGRlIGdncGxvdCB0ZW5kcsOhIGNvbW8gbcOtbmltbyAzIGNvbXBvbmVudGVzOiBsb3MgKipkYXRvcyoqLCB1biAqKnNpc3RlbWEgZGUgY29vcmRlbmFkYXMqKiB5IHVuYSAqKmdlb21ldHLDrWEqKiAobGEgcmVwcmVzZW50YWNpw7NuIHZpc3VhbCBkZSBsb3MgZGF0b3MpIHkgc2UgaXLDoSBjb25zdHJ1eWVuZG8gcG9yIGNhcGFzLgoKIyMgUHJpbWVyYSBjYXBhOiBlbCDDoXJlYSBkZWwgZ3LDoWZpY28KCkxhIGZ1bmNpw7NuIHByaW5jaXBhbCBkZSB7Z2dwbG90Mn0gZXMganVzdGFtZW50ZSBgZ2dwbG90KClgIHF1ZSBwZXJtaXRlICppbmljaWFyKiBlbCBncsOhZmljbyB5IGFkZW3DoXMgZGVmaW5pciBsYXMgY2FyYWN0ZXLDrXN0aWNhcyAqZ2xvYmFsZXMqLgpFbCBwcmltZXIgYXJndW1lbnRvIGRlIGVzdGEgZnVuY2nDs24gc2Vyw6FuIGxvcyBkYXRvcyBxdWUgdmFzIGEgdmlzdWFsaXphciwgc2llbXByZSBlbiB1biBkYXRhIGZyYW1lLgpFbiBlc3RlIGNhc28gdXNhbW9zIGBlc3RhY2lvbmVzX3NtbmAuCgpFbCBzZWd1bmRvIGFyZ3VtZW50byBzZSBsbGFtYSAibWFwcGluZyIgKCptYXBlbyogZW4gaW5nbMOpcykuIApFc3RlIGFyZ3VtZW50byBkZWZpbmUgbGEgcmVsYWNpw7NuIGVudHJlIGNhZGEgY29sdW1uYSBkZWwgZGF0YSBmcmFtZSB5IGxvcyBkaXN0aW50b3MgcGFyw6FtZXRyb3MgZ3LDoWZpY29zLiBQb3IgZWplbXBsbywgcXXDqSBjb2x1bW5hIHZhIGEgcmVwcmVzZW50YXIgZWwgZWplIHgsIGN1w6FsIHZhIGEgc2VyIGVsIGVqZSB5LCBldGMuIApFc3RlIG1hcGVvIHNlIGhhY2UgKipzaWVtcHJlKiogY29uIGxhIGZ1bmNpw7NuIGBhZXMoKWAgKHF1ZSB2aWVuZSBkZSAqYWVzdGhldGljcyosICplc3TDqXRpY2EqIGVuIGluZ2zDqXMpLiAKClBvciBlamVtcGxvLCBzaSBxdWVyZW1vcyBoYWNlciB1biBncsOhZmljbyBxdWUgbXVlc3RyZSBsYSB1YmljYWNpw7NuIGRlIGxhcyBlc3RhY2lvbmVzIHVzYXLDrWFzIGFsZ28gY29tbyBlc3RvOgoKYGBge3J9CmxpYnJhcnkoZ2dwbG90MikKZ2dwbG90KGRhdGEgPSBlc3RhY2lvbmVzX3NtbiwgbWFwcGluZyA9IGFlcyh4ID0gbG9uLCB5ID0gbGF0KSkgKwogIGdlb21fcG9pbnQoKSAgCmBgYAoKRXN0ZSBjw7NkaWdvIGxlIGluZGljYSBhIGdncGxvdCBxdWUgZ2VuZXJlIHVuIGdyw6FmaWNvIGRvbmRlIGVsIGVqZSAqKngqKiBzZSBtYXBlYSBhIGxhIGNvbHVtbmEgYGxvbmAgeSBlbCBlamUgKip5KiosIGEgbGEgY29sdW1uYSBgbGF0YC4gClBhcmEgcmVwcmVzZW50YXIgbG9zIGRhdG9zIHVzYW5kbyBwdW50b3MsIGhheSBxdWUgdXNhciBgZ2VvbV9wb2ludCgpYAoKwqFOdWVzdHJvIHByaW1lciBtYXBhISAuLi4gY2FzaSAuLi4uCgpBaG9yYSB2ZWFtb3MgY29tbyBzZSBncmFmaWNhbiBsb3MgcG9sw61nb25vcyB0ZW5pZW5kbyBlbiBjdWVudGEgbG8gcXVlIGFwcmVuZGltb3MgcmVjaWVuLiBMb3MgZGF0b3MgZGUgbG9zIHBvbMOtZ29ub3MgZXN0w6FuIGVuIGBtYXBhYCB5IHNhYmVtb3MgcXVlIGVzIGRlbCB0aXBvIGBzZmAsIGFzaSBxdWUgYnVzY2Ftb3MgdW5hIGdlb21ldHLDrWEgcXVlIG5vcyBwZXJtaXRhIGdyYWZpY2FyIGVzZSB0aXBvIGRlIGRhdG9zLCBkZSBlc3RhIG1hbmVyYTogCgpgYGB7cn0KZ2dwbG90KG1hcGEpICsKICBnZW9tX3NmKCkKYGBgCgpQb3IgZGVmZWN0bywgZWwgbWFwYSBzZSBkaWJ1amEgY29uIHVuIGZvbmRvIGdyaXMsIHBlcm8gZWwgcHJvYmxlbWEgZXMgcXVlIGVzZSBmb25kbyBwdWVkZSB0YXBhciBsb3MgZGF0b3MgZGUgcHVudG9zIGRlIGxhcyBlc3RhY2lvbmVzLiBQYXJhIHBhcmEgZGlidWphciBzw7NsbyBsb3MgY29udG9ybm9zIGhheSBxdWUgbW9kaWZpY2FyIGxhIGdlb21ldHLDrWEgdW4gcG9jbzoKCmBgYHtyfQpnZ3Bsb3QobWFwYSkgKwogIGdlb21fc2YoZmlsbCA9IE5BLCBjb2xvciA9ICJibGFjayIsIHNpemUgPSAwLjIpCiAgCmBgYAoKQWhvcmEgdmFtb3MgYSBqdW50YXIgbG9zIGRvcyBtYXBhczogZWwgZGUgcHVudG9zIHkgZWwgZGUgcG9sw61nb25vcwoKCmBgYHtyfQpnZ3Bsb3QobWFwYSkgKwogIGdlb21fc2YoZmlsbCA9IE5BLCBjb2xvciA9ICJibGFjayIsIHNpemUgPSAwLjIpICsKICBnZW9tX3BvaW50KGRhdGEgPSBlc3RhY2lvbmVzX3NtbiwgbWFwcGluZyA9IGFlcyhsb24sIGxhdCkpIAoKYGBgCgoKRmluYWxtZW50ZSwgcG9kZW1vcyByZXN0cmluZ2lyIGVsIMOhcmVhIGRlbCBtYXBhIHBhcmEgcXVlIHNlIG11ZXN0cmUgc29sbyBkb25kZSBoYXkgZGF0b3M6CgpgYGB7cn0KZ2dwbG90KG1hcGEpICsKICBnZW9tX3NmKGZpbGwgPSBOQSwgY29sb3IgPSAiYmxhY2siLCBzaXplID0gMC4yKSArCiAgZ2VvbV9wb2ludChkYXRhID0gZXN0YWNpb25lc19zbW4sIG1hcHBpbmcgPSBhZXMobG9uLCBsYXQpKSArCiAgY29vcmRfc2YoeWxpbSA9IGMoLTU1LCAtMjApLCB4bGltID0gYygtODAsIC01MCkpCgpgYGAKCjo6OiB7LmFsZXJ0IC5hbGVydC1pbmZvfQoqKkRlc2Fmw61vKioKCkludGVudMOhIHJlcGxpY2FyIGVzdGUgbWlzbW8gbWFwYSBwZXJvIGNvbiBsb3MgZGF0b3MgcXVlIGVzdMOhbiBlbiBlbCBhcmNoaXZvIF9lc3RhY2lvbmVzX3NpZ2EuY3N2XyBkZW50cm8gZGUgbGEgY2FycGV0YSBkYXRvcyBkZWwgcHJveWVjdG8uCgo6OjoKCgojIyMgTGV5ZW5kbyB1biBhcmNoaXZvIHNoYXBlCgpFbCBmb3JtYXRvIF9FU1JJIFNoYXBlZmlsZV8gZXMgdW5vIGRlIGxvcyBmb3JtYXRvcyBtYXMgY29tdW5lcyBkZSBpbmZvcm1hY2lvbiBnZW9ncmFmaWNhIHZlY3RvcmlhbC4gIExhIG1heW9yaWEgZGUgbGFzIEluZnJhZXN0cnVjdHVyYXMgZGUgRGF0b3MgRXNwYWNpYWxlcyAoSURFcykgbm9zIHBlcm1pdGVuIGFjY2VkZXIgYSBkaXZlcnNhcyBjYXBhcyBkZSBpbmZvcm1hY2lvbiBlbiBlc3RlIGZvcm1hdG8uIFVuYSBkZSBlc2FzIElERSBlcyBsYSBkZWwgW0luc3RpdHV0byBHZW9ncmFmaWNvIE5hY2lvbmFsXShodHRwczovL3d3dy5pZ24uZ29iLmFyL051ZXN0cmFzQWN0aXZpZGFkZXMvSW5mb3JtYWNpb25HZW9lc3BhY2lhbC9DYXBhc1NJRykgeSBvdHJhIGVzIGxhIGRlbCBbSW5zdGl0dXRvIE5hY2lvbmFsIGRlIFRlY25vbG9naWEgQWdyb3BlY3VhcmlhXShodHRwczovL2dlby1iYWNrZW5kLmludGEuZ29iLmFyL2NhdGFsb2d1ZS8pLgoKRGUgZXN0ZSB1bHRpbW8gZGVzY2FyZ3VlIGVsIGF0bGFzIGRlIHN1ZWxvcyBkZSBBcmdlbnRpbmEgZW4gZXNjYWxhIDE6NTAwLjAwMCBxdWUgdmFtb3MgYSBsZWVyIHVzYW5kbyBsYSBmdW5jaW9uIGB2ZWN0YCBkZWwgcGFxdWV0ZSBgdGVycmFgIHkgbGEgZnVuY2lvbiBgc3RfYXNfc2ZgIGVsIHBhcXVldGUgYHNmYCBwYXJhIHRyYW5zZm9ybWFyIGRlbCBmb3JtYXRvIGRlIHRlcnJhIGEgc2YgcXVlIG5lY2VzaXRhIGdncGxvdCBwYXJhIHBvZGVyIGdyYWZpY2FyOgoKYGBge3J9CmxpYnJhcnkodGVycmEpCmxpYnJhcnkoc2YpCnN1ZWxvcyA8LSB2ZWN0KCJkYXRvcy9zdWVsb3NfYXJnZW50aW5hXzFfNTAwIikgCnN1ZWxvc19zZiA8LSBzdF9hc19zZihzdWVsb3MpCmBgYAoKQWhvcmEgcG9kZW1vcyBncmFmaWNhciBkaWZlcmVudGVzIG1hcGFzIGRlIEFyZ2VudGluYSBhIHBhcnRpciBkZSBsYXMgY2FyYWN0ZXJpc3RpY2FzIGRlIGxvcyBzdWVsb3MuIFZhbW9zIGEgYXNvY2lhbCBsYSB2YXJpYWJsZSBgb3JkZW5fc3VlM2AgcGFyYSBxdWUgY2FkYSBjYXRlZ29yaWEgdGVuZ2EgdW4gY29sb3IgZGlmZXJlbnRlLgoKYGBge3J9CmdncGxvdChzdWVsb3Nfc2YpICsKICBnZW9tX3NmKGFlcyhmaWxsID0gb3JkZW5fc3VlMykpICsgIAogIHRoZW1lX21pbmltYWwoKSArCiAgbGFicyh0aXRsZSA9ICJVbmlkYWRlcyBkZSB0aXBvcyBkZSBzdWVsb3MgZGUgQXJnZW50aW5hIiwKICAgICAgIGZpbGwgPSAiU3VlbG9zIikgCmBgYAoK</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("02-r-vectores.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

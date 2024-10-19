@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Ecosistema(s) espacial(es) de R</title>
+
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Trabajo con datos espaciales en R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Temas
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-r-spatial.html">Ecosistema espacial</a>
+    </li>
+    <li>
+      <a href="02-r-vectores.html">Trabajando con vectores</a>
+    </li>
+    <li>
+      <a href="03-r-rasters.html">Trabajando con raster</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/agrianalytics/agrospatial/">Repo</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Ecosistema(s) espacial(es) de R</h1>
+
+</div>
+
+
+<p>R tiene un ecosistema muy potente para poder realizar tareas de
+geocomputación, entre las que podemos mencionar:</p>
+<ul>
+<li>Análisis exploratorio de datos (EDA)</li>
+<li>Procesamiento de datos</li>
+<li>Transformación de datos (p. ej., cambio de proyección,
+cálculos)</li>
+<li>Visualización de datos (no solo por medio de mapas)</li>
+<li>Desarrollo de aplicaciones web</li>
+<li>Desarrollo de software, en forma de funciones o paquetes (por
+ejemplo, para compartir nuevos métodos)</li>
+</ul>
+<div class="alert alert-info">
+<p>El libro <a href="https://geocompr.github.io/es/">Geocomputación con
+R</a> es una muy buena guía para ver en detalle muchas de estas
+tareas.</p>
+<p>La organizacion de GitHub <a
+href="https://github.com/rspatial">rspatial</a> y <a
+href="https://github.com/r-spatial">r-spatial</a> continenen la mayoria
+de los paquetes del ambito geografico y de sensoramiento remoto.</p>
+</div>
+<p>Hay muchas maneras de manejar datos geográficos en R, con muchos
+paquetes en el área. Entre ellos se encuentran:</p>
+<ul>
+<li><a href="https://github.com/r-spatial/sf">{sf}</a>, <a
+href="https://github.com/edzer/sp">{sp}</a>, <a
+href="https://github.com/rspatial/terra">{terra}</a>, <a
+href="https://github.com/rspatial/raster">{raster}</a>, <a
+href="https://github.com/r-spatial/stars">{stars}</a> - clases
+espaciales</li>
+<li><a href="https://github.com/tidyverse/dplyr">{dplyr}</a>, <a
+href="https://github.com/ateucher/rmapshaper">{rmapshaper}</a> -
+procesamiento de tablas de atributos/geometrías</li>
+<li><a
+href="https://docs.ropensci.org/rnaturalearth/">{rnaturalearth}</a>, <a
+href="https://docs.ropensci.org/osmdata/">{osmdata}</a>, <a
+href="https://docs.ropensci.org/rsat/">{rsat}</a>, <a
+href="https://docs.ropensci.org/MODISTools/">{MODISTools}</a>- descarga
+de datos espaciales</li>
+<li><a href="https://github.com/rsbivand/rgrass">{rgrass}</a>, <a
+href="https://github.com/paleolimbot/qgisprocess">{qgisprocess}</a>, <a
+href="https://github.com/r-spatial/rgee">{rgee}</a> - conexión con otros
+software de Sistemas de Información Geográfico</li>
+<li><a href="https://github.com/r-spatial/gstat">{gstat}</a>, <a
+href="https://github.com/mlr-org/mlr3">{mlr3}</a>, <a
+href="https://github.com/HannaMeyer/CAST">{CAST}</a> - modelado de datos
+espaciales</li>
+<li><a
+href="https://github.com/oscarperpinan/rastervis">{rasterVis}</a>, <a
+href="https://github.com/mtennekes/tmap">{tmap}</a>, <a
+href="https://github.com/tidyverse/ggplot2">{ggplot2}</a> -
+visualizaciones estáticas</li>
+<li><a href="https://github.com/rstudio/leaflet">{leaflet}</a>, <a
+href="https://github.com/r-spatial/mapview">{mapview}</a>, <a
+href="https://github.com/SymbolixAU/mapdeck">{mapdeck}</a> -
+visualizaciones interactivas</li>
+<li><a href="http://spatstat.org/">{spatstat}</a>, <a
+href="https://github.com/r-spatial/spdep">{spdep}</a>, <a
+href="https://github.com/r-spatial/spatialreg">{spatialreg}</a>, <a
+href="https://github.com/rspatial/dismo">{dismo}</a>, <a
+href="https://github.com/r-spatialecology/landscapemetrics">{landscapemetrics}</a>,
+<a
+href="http://bleutner.github.io/RStoolbox/rstbx-docu/RStoolbox.html">{RStoolbox}</a>,
+<a href="https://github.com/tylermorganwall/rayshader">{rayshader}</a>,
+<a href="https://github.com/appelmar/gdalcubes_R">{gdalcubes}</a>, <a
+href="https://github.com/luukvdmeer/sfnetworks">{sfnetworks}</a>, <a
+href="https://github.com/eliocamp/metR">{metR}</a> - diferentes tipos de
+análisis de datos espaciales</li>
+</ul>
+<p>y muchos, muchos paquetes más.</p>
+<div class="alert alert-info">
+<p>En la vista <em>Spatial</em> de CRAN <a
+href="https://cran.r-project.org/view=Spatial"
+class="uri">https://cran.r-project.org/view=Spatial</a> se cuenta con
+una visión general de las diferentes tareas espaciales que se pueden
+resolver con R.</p>
+</div>
+<div id="tipos-de-datos" class="section level2">
+<h2>Tipos de datos</h2>
+<p>Para trabajar con datos especiales, en general, representamos la
+información de dos maneras:</p>
+<ul>
+<li><p><em>Vectores:</em> la realidad se representa utilizando
+<strong>puntos</strong>, <strong>líneas</strong> o
+<strong>polígonos</strong>.</p></li>
+<li><p><em>Raster:</em> la información se representa por medio de
+grillas o píxeles.</p></li>
+</ul>
+<p>En R contamos con diferentes paquetes para poder trabajar con estos
+dos formatos.</p>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRWNvc2lzdGVtYShzKSBlc3BhY2lhbChlcykgZGUgUiIKb3V0cHV0OiAKICBodG1sX2RvY3VtZW50OgogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgaGlnaGxpZ2h0OiB0YW5nbwotLS0KClIgdGllbmUgdW4gZWNvc2lzdGVtYSBtdXkgcG90ZW50ZSBwYXJhIHBvZGVyIHJlYWxpemFyIHRhcmVhcyBkZSBnZW9jb21wdXRhY2nDs24sIAplbnRyZSBsYXMgcXVlIHBvZGVtb3MgbWVuY2lvbmFyOgoKKiBBbsOhbGlzaXMgZXhwbG9yYXRvcmlvIGRlIGRhdG9zIChFREEpCiogUHJvY2VzYW1pZW50byBkZSBkYXRvcyAKKiBUcmFuc2Zvcm1hY2nDs24gZGUgZGF0b3MgKHAuIGVqLiwgY2FtYmlvIGRlIHByb3llY2Npw7NuLCBjw6FsY3Vsb3MpCiogVmlzdWFsaXphY2nDs24gZGUgZGF0b3MgKG5vIHNvbG8gcG9yIG1lZGlvIGRlIG1hcGFzKQoqIERlc2Fycm9sbG8gZGUgYXBsaWNhY2lvbmVzIHdlYgoqIERlc2Fycm9sbG8gZGUgc29mdHdhcmUsIGVuIGZvcm1hIGRlIGZ1bmNpb25lcyBvIHBhcXVldGVzIChwb3IgZWplbXBsbywgcGFyYSBjb21wYXJ0aXIgbnVldm9zIG3DqXRvZG9zKQoKOjo6IHsuYWxlcnQgLmFsZXJ0LWluZm99CkVsIGxpYnJvIFtHZW9jb21wdXRhY2nDs24gY29uIFJdKGh0dHBzOi8vZ2VvY29tcHIuZ2l0aHViLmlvL2VzLykgZXMgdW5hIG11eSBidWVuYSBndcOtYSBwYXJhIHZlciBlbiBkZXRhbGxlIG11Y2hhcyBkZSBlc3RhcyB0YXJlYXMuCgpMYSBvcmdhbml6YWNpb24gZGUgR2l0SHViIFtyc3BhdGlhbF0oaHR0cHM6Ly9naXRodWIuY29tL3JzcGF0aWFsKSB5IFtyLXNwYXRpYWxdKGh0dHBzOi8vZ2l0aHViLmNvbS9yLXNwYXRpYWwpIGNvbnRpbmVuZW4gbGEgbWF5b3JpYSBkZSBsb3MgcGFxdWV0ZXMgZGVsIGFtYml0byBnZW9ncmFmaWNvIHkgZGUgc2Vuc29yYW1pZW50byByZW1vdG8uCjo6OgoKCkhheSBtdWNoYXMgbWFuZXJhcyBkZSBtYW5lamFyIGRhdG9zIGdlb2dyw6FmaWNvcyBlbiBSLCBjb24gbXVjaG9zIHBhcXVldGVzIGVuIGVsIMOhcmVhLiBFbnRyZSBlbGxvcyBzZSBlbmN1ZW50cmFuOgoKKiBbe3NmfV0oaHR0cHM6Ly9naXRodWIuY29tL3Itc3BhdGlhbC9zZiksIFt7c3B9XShodHRwczovL2dpdGh1Yi5jb20vZWR6ZXIvc3ApLCBbe3RlcnJhfV0oaHR0cHM6Ly9naXRodWIuY29tL3JzcGF0aWFsL3RlcnJhKSwgW3tyYXN0ZXJ9XShodHRwczovL2dpdGh1Yi5jb20vcnNwYXRpYWwvcmFzdGVyKSwgW3tzdGFyc31dKGh0dHBzOi8vZ2l0aHViLmNvbS9yLXNwYXRpYWwvc3RhcnMpIC0gY2xhc2VzIGVzcGFjaWFsZXMKKiBbe2RwbHlyfV0oaHR0cHM6Ly9naXRodWIuY29tL3RpZHl2ZXJzZS9kcGx5ciksIFt7cm1hcHNoYXBlcn1dKGh0dHBzOi8vZ2l0aHViLmNvbS9hdGV1Y2hlci9ybWFwc2hhcGVyKSAtIHByb2Nlc2FtaWVudG8gZGUgdGFibGFzIGRlIGF0cmlidXRvcy9nZW9tZXRyw61hcwoqIFt7cm5hdHVyYWxlYXJ0aH1dKGh0dHBzOi8vZG9jcy5yb3BlbnNjaS5vcmcvcm5hdHVyYWxlYXJ0aC8pLCBbe29zbWRhdGF9XShodHRwczovL2RvY3Mucm9wZW5zY2kub3JnL29zbWRhdGEvKSwgW3tyc2F0fV0oaHR0cHM6Ly9kb2NzLnJvcGVuc2NpLm9yZy9yc2F0LyksIFt7TU9ESVNUb29sc31dKGh0dHBzOi8vZG9jcy5yb3BlbnNjaS5vcmcvTU9ESVNUb29scy8pLSBkZXNjYXJnYSBkZSBkYXRvcyBlc3BhY2lhbGVzCiogW3tyZ3Jhc3N9XShodHRwczovL2dpdGh1Yi5jb20vcnNiaXZhbmQvcmdyYXNzKSwgW3txZ2lzcHJvY2Vzc31dKGh0dHBzOi8vZ2l0aHViLmNvbS9wYWxlb2xpbWJvdC9xZ2lzcHJvY2VzcyksIFt7cmdlZX1dKGh0dHBzOi8vZ2l0aHViLmNvbS9yLXNwYXRpYWwvcmdlZSkgLSBjb25leGnDs24gY29uIG90cm9zIHNvZnR3YXJlIGRlIFNpc3RlbWFzIGRlIEluZm9ybWFjacOzbiBHZW9ncsOhZmljbwoqIFt7Z3N0YXR9XShodHRwczovL2dpdGh1Yi5jb20vci1zcGF0aWFsL2dzdGF0KSwgW3ttbHIzfV0oaHR0cHM6Ly9naXRodWIuY29tL21sci1vcmcvbWxyMyksIFt7Q0FTVH1dKGh0dHBzOi8vZ2l0aHViLmNvbS9IYW5uYU1leWVyL0NBU1QpIC0gbW9kZWxhZG8gZGUgZGF0b3MgZXNwYWNpYWxlcwoqIFt7cmFzdGVyVmlzfV0oaHR0cHM6Ly9naXRodWIuY29tL29zY2FycGVycGluYW4vcmFzdGVydmlzKSwgW3t0bWFwfV0oaHR0cHM6Ly9naXRodWIuY29tL210ZW5uZWtlcy90bWFwKSwgW3tnZ3Bsb3QyfV0oaHR0cHM6Ly9naXRodWIuY29tL3RpZHl2ZXJzZS9nZ3Bsb3QyKSAtIHZpc3VhbGl6YWNpb25lcyBlc3TDoXRpY2FzCiogW3tsZWFmbGV0fV0oaHR0cHM6Ly9naXRodWIuY29tL3JzdHVkaW8vbGVhZmxldCksIFt7bWFwdmlld31dKGh0dHBzOi8vZ2l0aHViLmNvbS9yLXNwYXRpYWwvbWFwdmlldyksIFt7bWFwZGVja31dKGh0dHBzOi8vZ2l0aHViLmNvbS9TeW1ib2xpeEFVL21hcGRlY2spIC0gdmlzdWFsaXphY2lvbmVzIGludGVyYWN0aXZhcwoqIFt7c3BhdHN0YXR9XShodHRwOi8vc3BhdHN0YXQub3JnLyksIFt7c3BkZXB9XShodHRwczovL2dpdGh1Yi5jb20vci1zcGF0aWFsL3NwZGVwKSwgW3tzcGF0aWFscmVnfV0oaHR0cHM6Ly9naXRodWIuY29tL3Itc3BhdGlhbC9zcGF0aWFscmVnKSwgW3tkaXNtb31dKGh0dHBzOi8vZ2l0aHViLmNvbS9yc3BhdGlhbC9kaXNtbyksIFt7bGFuZHNjYXBlbWV0cmljc31dKGh0dHBzOi8vZ2l0aHViLmNvbS9yLXNwYXRpYWxlY29sb2d5L2xhbmRzY2FwZW1ldHJpY3MpLCBbe1JTdG9vbGJveH1dKGh0dHA6Ly9ibGV1dG5lci5naXRodWIuaW8vUlN0b29sYm94L3JzdGJ4LWRvY3UvUlN0b29sYm94Lmh0bWwpLCBbe3JheXNoYWRlcn1dKGh0dHBzOi8vZ2l0aHViLmNvbS90eWxlcm1vcmdhbndhbGwvcmF5c2hhZGVyKSwgW3tnZGFsY3ViZXN9XShodHRwczovL2dpdGh1Yi5jb20vYXBwZWxtYXIvZ2RhbGN1YmVzX1IpLCBbe3NmbmV0d29ya3N9XShodHRwczovL2dpdGh1Yi5jb20vbHV1a3ZkbWVlci9zZm5ldHdvcmtzKSwgW3ttZXRSfV0oaHR0cHM6Ly9naXRodWIuY29tL2VsaW9jYW1wL21ldFIpIC0gZGlmZXJlbnRlcyB0aXBvcyBkZSBhbsOhbGlzaXMgZGUgZGF0b3MgZXNwYWNpYWxlcwoKeSBtdWNob3MsIG11Y2hvcyBwYXF1ZXRlcyBtw6FzLiAKCjo6OiB7LmFsZXJ0IC5hbGVydC1pbmZvfQpFbiBsYSB2aXN0YSBfU3BhdGlhbF8gZGUgQ1JBTiBodHRwczovL2NyYW4uci1wcm9qZWN0Lm9yZy92aWV3PVNwYXRpYWwgc2UgY3VlbnRhIGNvbiB1bmEgdmlzacOzbiBnZW5lcmFsIGRlIGxhcyBkaWZlcmVudGVzIHRhcmVhcyBlc3BhY2lhbGVzIHF1ZSBzZSBwdWVkZW4gcmVzb2x2ZXIgY29uIFIuCjo6OgoKIyMgVGlwb3MgZGUgZGF0b3MKClBhcmEgdHJhYmFqYXIgY29uIGRhdG9zIGVzcGVjaWFsZXMsIGVuIGdlbmVyYWwsIHJlcHJlc2VudGFtb3MgbGEgaW5mb3JtYWNpw7NuIGRlIGRvcyBtYW5lcmFzOgoKKiBfVmVjdG9yZXM6XyBsYSByZWFsaWRhZCBzZSByZXByZXNlbnRhIHV0aWxpemFuZG8gKipwdW50b3MqKiwgKipsw61uZWFzKiogbyAqKnBvbMOtZ29ub3MqKi4KCiogX1Jhc3RlcjpfIGxhIGluZm9ybWFjacOzbiBzZSByZXByZXNlbnRhIHBvciBtZWRpbyBkZSBncmlsbGFzIG8gcMOteGVsZXMuCgpFbiBSIGNvbnRhbW9zIGNvbiBkaWZlcmVudGVzIHBhcXVldGVzIHBhcmEgcG9kZXIgdHJhYmFqYXIgY29uIGVzdG9zIGRvcyBmb3JtYXRvcy4gIAo=</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("01-r-spatial.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
