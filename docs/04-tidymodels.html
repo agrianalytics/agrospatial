@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Tidymodels</title>
+
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Trabajo con datos espaciales en R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Temas
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-r-spatial.html">Ecosistema espacial</a>
+    </li>
+    <li>
+      <a href="02-r-vectores.html">Trabajando con vectores</a>
+    </li>
+    <li>
+      <a href="03-r-rasters.html">Trabajando con raster</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/agrianalytics/agrospatial/">Repo</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Tidymodels</h1>
+
+</div>
+
+
+<div id="porqué-tidymodels" class="section level2">
+<h2>¿Porqué tidymodels?</h2>
+<p>Tidymodels es en realidad un conjunto de paquetes de R que, al igual
+que Tidyverse, busca unificar la sintaxis y modo de uso al alrededor del
+modelado estadístico de datos. A diferencia de Tidyverse, Tidymodels no
+implementa nuevas maneras de, por ejemplo, aplicar el modelo lineal, si
+no que genera una interfaz única a partir de la cual utilizar las
+funciones que ya existen. De la misma manera, la salida que genera es
+consistente a lo largo de distintos modelos e implementaciones, y mejor
+aún en formato tidy.</p>
+<p>Los principales paquete de Tidymodels son:</p>
+<table>
+<colgroup>
+<col width="15%" />
+<col width="75%" />
+<col width="9%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><a
+href="https://rsample.tidymodels.org/"><code>rsample</code></a></td>
+<td>Para dividir y hacer remuestreo de los datos</td>
+<td><img src="https://www.tidymodels.org/images/rsample.png"
+width="50" /></td>
+</tr>
+<tr class="even">
+<td><a
+href="https://recipes.tidymodels.org/"><code>recipes</code></a></td>
+<td>Preprocesamiento de los datos de manera ordenada y reproducible</td>
+<td><img src="https://www.tidymodels.org/images/recipes.png"
+width="50" /></td>
+</tr>
+<tr class="odd">
+<td><a
+href="https://parsnip.tidymodels.org/"><code>parsnip</code></a></td>
+<td>Interfaz unificada para modelar datos</td>
+<td><img src="https://www.tidymodels.org/images/parsnip.png"
+width="50" /></td>
+</tr>
+<tr class="even">
+<td><a
+href="https://workflows.tidymodels.org/"><code>workflows</code></a></td>
+<td>Organiza el preprocesamiento, el modelado y postprocesa</td>
+<td><img src="https://www.tidymodels.org/images/workflows.png"
+width="50" /></td>
+</tr>
+<tr class="odd">
+<td><a
+href="https://yardstick.tidymodels.org/"><code>yardstick</code></a></td>
+<td>Mide la efectividad de los modelos</td>
+<td><img src="https://www.tidymodels.org/images/yardstick.png"
+width="50" /></td>
+</tr>
+<tr class="even">
+<td><a href="https://broom.tidymodels.org/"><code>broom</code></a></td>
+<td>Resume la salida de modelos en formato tidy</td>
+<td><img src="https://www.tidymodels.org/images/broom.png"
+width="50" /></td>
+</tr>
+</tbody>
+</table>
+<p>pero hay muchos otros con objetivos específicos que completan el
+universo de tidymodels.</p>
+</div>
+<div id="el-proceso-de-modelado-de-datos" class="section level2">
+<h2>El proceso de modelado de datos</h2>
+<p>Este diagrama muestra el proceso de modelado de datos teórico. Por
+supuesto, en la realidad vamos y venimos entre los distintos pasos hasta
+ajustar cada detalle. Pero es importante tener en cuenta algunos
+detalles:</p>
+<ul>
+<li><p><strong>Cómo aprovechar los datos:</strong> es importante hacer
+un “presupuesto” para planificar cómo vamos a usar los datos. Si usamos
+el 100% de nuestra muestra en el entrenamiento de un modelo, luego no
+podremos hacer ningún tipo de verificación (el modelo ya conoce los
+datos, cualquier resultado no será válido). Por eso necesitamos dividir
+los datos en (al menos) entrenamiento y testeo. Usaremos
+<code>rsample</code> para esta tarea.</p></li>
+<li><p><strong>Qué modelo utilizar:</strong> la mayoría de las veces no
+sabremos cual es el mejor modelo a aplicar, dependerá en parte de
+nuestro objetivo: queremos hacer describir, hacer inferencias o predecir
+a partir de los datos? Lo interensante es probar distintos modelos para
+quedarnos con el mejor o utilizar una combinación. Para esto es
+necesario hacer un remuestreo de los datos de entrenamiento y así hacer
+comparaciones válidas.</p></li>
+<li><p><strong>La verificación:</strong> es importante hacer una
+verificación tanto cualitativa (visual) como cuantitativa con los el
+subset de testeo, pero nunca con los datos de entrenamiento!</p></li>
+</ul>
+<p><img src="img/modelado.png" /></p>
+</div>
+<div id="datos-de-cultivos" class="section level2">
+<h2>Datos de cultivos</h2>
+<p>Vamos a trabajar con datos de rendimiento de cultivos que incluyen
+información sobre la floración, la altura del cultivo, la campaña, el
+tipo de ensayo, la distacia entre surcos entre otras cosas. Con esta
+información intentaremos generar un modelo que nos permita predecir la
+variable aceite_porcentaje.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>cultivos <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/paocorrales/intro-tidymodels-agro/main/datos/cultivos.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## Rows: 6856 Columns: 13
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (7): campania, tipo_ensayo, epoca, tipo_siembra, testigo, visible, cultivar
+## dbl (6): floracion_dias, altura_cm, densidad_sem, rendimiento, aceite_porcen...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>La variable <code>aceite_porcentaje</code> tiene la siguiente
+distribucuón:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>cultivos <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(aceite_porcentaje)) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">&quot;white&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="fu">geom_rug</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>)</span></code></pre></div>
+<p><img src="04-tidymodels_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<div id="preparando-los-datos" class="section level3">
+<h3>Preparando los datos</h3>
+<p>Esta base de datos tiene en total 6856 registros de distintos ensayos
+de cultivos. Vamos a dividir los datos en 2 subsets de entrenamiento
+(<code>cultivos_train</code>) y testeo (<code>cultivos_test</code>). En
+primer lugar la función <code>initial_split()</code> divide los datos en
+2 utilizando el argumento <code>prop</code> para definir cuantos datos
+iran a cada subset. En ese caso usamos por defecto <code>3/4</code>, es
+decir, el 75% de los datos iran al entrenamiento y el 25% quedará para
+el testeo. Decidir este porcentaje es un problea en si mismo!</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">91</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>cultivos_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(cultivos, </span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>                           <span class="at">prop =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>cultivos_split</span></code></pre></div>
+<pre><code>## &lt;Training/Testing/Total&gt;
+## &lt;5142/1714/6856&gt;</code></pre>
+<p>En segundo lugar, con <code>training()</code> y
+<code>testing()</code> extraemos los 2 subsets de datos a partir del
+objeto que generamos recién.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>cultivos_train <span class="ot">&lt;-</span> <span class="fu">training</span>(cultivos_split)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>cultivos_test <span class="ot">&lt;-</span> <span class="fu">testing</span>(cultivos_split)</span></code></pre></div>
+<p>Veamos ahora que pinta tiene nuestra variable de interes en relación
+con otras, por ejemplo <code>densidad_sem</code>. Inicialmente no parece
+haber una relación muy clara.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>cultivos_train <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(densidad_sem, aceite_porcentaje)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() </span></code></pre></div>
+<p><img src="04-tidymodels_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Sin embargo si incluimos <code>tipo_siempra</code> como tercera
+variable, vemos que esta nueva variable podría llegar a explicar, en
+parte el comportamiento de <code>aceite_porcentaje</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>cultivos_train <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(densidad_sem, aceite_porcentaje)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">color =</span> tipo_siembra)) </span></code></pre></div>
+<p><img src="04-tidymodels_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Comencemos ahora con el preprocesamiento de los datos. Para esto
+crearemos una <em>receta</em>, es decir una serie de pasos que realicen
+las transformaciones necesaria para dejar los datos listos para el
+modelado. A diferencia de otras implementaciones con tidymodel separamos
+completamente el preprocesamiento del modelado. De esta manera
+<em>modularizamos</em> el proceso y podemos utilizar la misma receta
+para aplicar modelos distintos.</p>
+<p>Crearemos la receta con los datos de entrenamiento pero luego
+podremos aplicar estos pasos también a los datos de testeo. Iniciamos la
+receta con la función <code>recipe()</code> indicando la formula, en
+este caso queremos evaluar la relación de <code>aceite_porcentaje</code>
+en función de todas las otras variables.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>receta_aceite <span class="ot">&lt;-</span> </span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  <span class="fu">recipe</span>(aceite_porcentaje <span class="sc">~</span> ., <span class="at">data =</span> cultivos_train) </span></code></pre></div>
+<p>El siguiente paso es trabajar con predictores categóricos, para esto
+sumamos un paso a la receta <code>step_dummy()</code> que convierte las
+variables nominales (caracteres o factores) en variables numéricas
+binarias. En este caso aplicamos el paso a todos os predictores
+nominales. Aquí vemos además que la receta es compatible con el uso de
+la <code>%&gt;%</code> por lo que podemos ir sumando los paso uno detrás
+del otro.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>receta_aceite <span class="ot">&lt;-</span> </span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="fu">recipe</span>(aceite_porcentaje <span class="sc">~</span> ., <span class="at">data =</span> cultivos_train) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>())</span></code></pre></div>
+<pre><code>## </code></pre>
+<pre><code>## ── Recipe ──────────────────────────────────────────────────────────────────────</code></pre>
+<pre><code>## </code></pre>
+<pre><code>## ── Inputs</code></pre>
+<pre><code>## Number of variables by role</code></pre>
+<pre><code>## outcome:    1
+## predictor: 12</code></pre>
+<pre><code>## </code></pre>
+<pre><code>## ── Operations</code></pre>
+<pre><code>## • Dummy variables from: all_nominal_predictors()</code></pre>
+<p>En el siguiente paso <code>step_zv()</code> remueve las variables que
+contienen solo 1 valor único (si las hubiera), es decir con varianza
+cero.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>receta_aceite <span class="ot">&lt;-</span> </span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>  <span class="fu">recipe</span>(aceite_porcentaje <span class="sc">~</span> ., <span class="at">data =</span> cultivos_train) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_factor_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>  <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>())</span></code></pre></div>
+<p>Cómo vimos que hay alguna relación entre <code>densidad_sem</code> y
+<code>tipo_siembra</code> vamos a sumar un nuevo paso que tenga en
+cuenta esa interacción.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>receta_aceite <span class="ot">&lt;-</span> </span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>  <span class="fu">recipe</span>(aceite_porcentaje <span class="sc">~</span> ., <span class="at">data =</span> cultivos_train) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_factor_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>  <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>  <span class="fu">step_interact</span>(<span class="sc">~</span> <span class="fu">starts_with</span>(<span class="st">&quot;densidad_sem&quot;</span>)<span class="sc">:</span><span class="fu">starts_with</span>(<span class="st">&quot;tipo_siembra&quot;</span>))</span></code></pre></div>
+<p>Finalmente aplicamos <code>step_normalize()</code> para normalizar
+todos los predictores.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>receta_aceite <span class="ot">&lt;-</span> </span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>  <span class="fu">recipe</span>(aceite_porcentaje <span class="sc">~</span> ., <span class="at">data =</span> cultivos_train) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_factor_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>  <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>  <span class="fu">step_interact</span>(<span class="sc">~</span> <span class="fu">starts_with</span>(<span class="st">&quot;densidad_sem&quot;</span>)<span class="sc">:</span><span class="fu">starts_with</span>(<span class="st">&quot;tipo_siembra&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric_predictors</span>())</span></code></pre></div>
+<p>Y ahora si, tenemos nuestra receta.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>receta_aceite</span></code></pre></div>
+<pre><code>## </code></pre>
+<pre><code>## ── Recipe ──────────────────────────────────────────────────────────────────────</code></pre>
+<pre><code>## </code></pre>
+<pre><code>## ── Inputs</code></pre>
+<pre><code>## Number of variables by role</code></pre>
+<pre><code>## outcome:    1
+## predictor: 12</code></pre>
+<pre><code>## </code></pre>
+<pre><code>## ── Operations</code></pre>
+<pre><code>## • Dummy variables from: all_factor_predictors()</code></pre>
+<pre><code>## • Zero variance filter on: all_predictors()</code></pre>
+<pre><code>## • Interactions with: starts_with(&quot;densidad_sem&quot;):starts_with(&quot;tipo_siembra&quot;)</code></pre>
+<pre><code>## • Centering and scaling for: all_numeric_predictors()</code></pre>
+<p>Esta receta además, define claramente las transformaciones que
+hacemos en los datos por lo que es reproducible.</p>
+<p>Podríamos encadenar la función <code>prep()</code> para
+<em>preparar</em> los datos usando la receta pero en nuestro caso
+ejecutaremos todos los pasos necesarios en un <em>workflow</em>.</p>
+</div>
+<div id="definiendo-el-modelo" class="section level3">
+<h3>Definiendo el modelo</h3>
+<p>El siguiente paso es definir el modelo a aplicar. Nuevamente usamos
+tidymodels que tienen funciones que funcionan como interfaz con
+implementaciones en distintos paquetes. Podés revisar la lista de
+modelos disponibles <a
+href="https://parsnip.tidymodels.org/reference/index.html#models">acá</a>.
+En nuestro caso vamos a arrancar con el modelo linea usando la función
+<code>linear_reg()</code>.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a>modelo_lineal <span class="ot">&lt;-</span> </span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a>  <span class="fu">linear_reg</span>() </span></code></pre></div>
+<p>Por defecto esta función usa <code>lm</code> del paquete
+<code>stats</code> de R base pedro podríamos usar muchos otros
+<em>engines</em>, es decir, otras implementaciones al modelo lineal como
+<code>glm</code> y <code>glment</code>. Para setear un engine usamos
+<code>set_engine()</code>:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a>modelo_lineal <span class="ot">&lt;-</span> </span>
+<span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a>  <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb37-3"><a href="#cb37-3" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
+<p>En algunos casos necesitaremos tener paquetes específicos instalados,
+por ejemplo <code>lme</code> requiere un extension del paquete
+<code>parsnip</code>.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a>modelo_lineal</span></code></pre></div>
+<pre><code>## Linear Regression Model Specification (regression)
+## 
+## Computational engine: lm</code></pre>
+<p>Ya tenemos el segundo paso, el modelo. Pero como habrás notado, en
+ningún momento <code>modelo_lineal</code> se cruzó con nuestros datos.
+Vamos a unir todo en un workflow.</p>
+</div>
+<div id="uninendo-todo" class="section level3">
+<h3>Uninendo todo</h3>
+<p>Un <em>workflow</em> es un obejto que incorpora toda la información
+necesaria para ajustar y hacer predicciones en base a un modelo.
+Iniciamos nuestro workflow con la función <code>workflow()</code>:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a>wflow_lm <span class="ot">&lt;-</span> </span>
+<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a>  <span class="fu">workflow</span>()</span></code></pre></div>
+<p>Y luego con las funciones <code>add_model()</code> y
+<code>add_recipe()</code> agregamos el modelo y la receta que creamos
+recién.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>wflow_lm <span class="ot">&lt;-</span> </span>
+<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb41-3"><a href="#cb41-3" tabindex="-1"></a>  <span class="fu">add_model</span>(modelo_lineal) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-4"><a href="#cb41-4" tabindex="-1"></a>  <span class="fu">add_recipe</span>(receta_aceite)</span></code></pre></div>
+<p>Como vemos el obejto <code>wflow_lm</code> tiene la información del
+modelo (<code>linear_reg()</code>) y el preprocesamiento con nuestra
+receta.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a>wflow_lm</span></code></pre></div>
+<pre><code>## ══ Workflow ════════════════════════════════════════════════════════════════════
+## Preprocessor: Recipe
+## Model: linear_reg()
+## 
+## ── Preprocessor ────────────────────────────────────────────────────────────────
+## 4 Recipe Steps
+## 
+## • step_dummy()
+## • step_zv()
+## • step_interact()
+## • step_normalize()
+## 
+## ── Model ───────────────────────────────────────────────────────────────────────
+## Linear Regression Model Specification (regression)
+## 
+## Computational engine: lm</code></pre>
+<p>Con el workflow completo ahora si podemos ajustar el modelo usando
+los datos de entrenamiento:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>modelo_fit <span class="ot">&lt;-</span> <span class="fu">fit</span>(wflow_lm, <span class="at">data =</span> cultivos_train)</span></code></pre></div>
+<p>El objeto <code>modelo_fit</code> contiene muchísima información
+incluyendo el modelo, la receta y entre otras cosas nos permitirá
+extraer predicciones. Esto lo hacemos con la función
+<code>predict</code></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a><span class="fu">predict</span>(modelo_fit, <span class="at">new_data =</span> cultivos_test) <span class="sc">%&gt;%</span> </span>
+<span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 1
+##   .pred
+##   &lt;dbl&gt;
+## 1  43.5
+## 2  44.1
+## 3  47.2
+## 4  44.7
+## 5  NA  
+## 6  50.9</code></pre>
+<p>Además de predecir el valor medio, también podemos estimar intervalos
+de confianza con la misma función:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a>mean_predict <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo_fit, cultivos_test)</span>
+<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" tabindex="-1"></a>conf_int_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo_fit, </span>
+<span id="cb47-4"><a href="#cb47-4" tabindex="-1"></a>                         <span class="at">new_data =</span> cultivos_test, </span>
+<span id="cb47-5"><a href="#cb47-5" tabindex="-1"></a>                         <span class="at">type =</span> <span class="st">&quot;conf_int&quot;</span>)</span></code></pre></div>
+<p>Esto genera un par de tibbles con columnas <code>.pred_lower</code> y
+<code>.pred_upper</code> que son los límites inferiores y superiores de
+ese intervalo de confianza.</p>
+</div>
+<div id="verificación" class="section level3">
+<h3>Verificación</h3>
+<p>Veamos como le fue a nuestro modelo (spoiler alert: bastante mal).
+Primero vamos a graficar los valores predichos de
+<code>aceite_porcentaje</code> en función de los observados y que
+tenemos en nuestro subset de testeo.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a>aceite_predic <span class="ot">&lt;-</span> </span>
+<span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a>  cultivos_test <span class="sc">%&gt;%</span> </span>
+<span id="cb48-3"><a href="#cb48-3" tabindex="-1"></a>  <span class="fu">bind_cols</span>(mean_predict) </span>
+<span id="cb48-4"><a href="#cb48-4" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="#cb48-5" tabindex="-1"></a><span class="fu">ggplot</span>(aceite_predic, <span class="fu">aes</span>(aceite_porcentaje, .pred)) <span class="sc">+</span></span>
+<span id="cb48-6"><a href="#cb48-6" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;darkorange&quot;</span>) <span class="sc">+</span></span>
+<span id="cb48-7"><a href="#cb48-7" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb48-8"><a href="#cb48-8" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="sc">+</span></span>
+<span id="cb48-9"><a href="#cb48-9" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Observado&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Predicho&quot;</span>) <span class="sc">+</span></span>
+<span id="cb48-10"><a href="#cb48-10" tabindex="-1"></a>  <span class="fu">coord_equal</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">29</span>,<span class="dv">60</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">29</span>, <span class="dv">60</span>))</span></code></pre></div>
+<p><img src="04-tidymodels_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>Si nuestro modelo fuera “perfecto” todos los puntos deberían caer
+alrededor de la linea naranja. Sin embargo tenemos puntos que se alejan
+bastante. Desde este punto de vista más cualitativo vemos que el modelo
+no es muy bueno. Calculemos ahora cual seria el error que cometeríamos
+si usamos el modelo para predecir un valor de
+<code>aceite_porcentaje</code> en el futuro.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a><span class="fu">rmse</span>(aceite_predic, aceite_porcentaje, .pred)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 3
+##   .metric .estimator .estimate
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 rmse    standard        3.08</code></pre>
+<p>En este caso calculamos la raiz del error cuadrático medio o rmse con
+la función <code>rmse()</code> del paquee <code>yardsick</code>. El
+resultado es 3.0757701, esto significa que al estimar
+<code>aceite_porcentaje</code> con el modelo cometemos en promedio un
+error de 3.0757701.</p>
+<div id="extra" class="section level4">
+<h4>Extra!</h4>
+<p>Una herramienta muy poderosa que implementa Tidymodels es el
+remuestreo. Esto es generar subsets de datos tomando datos de manera
+aleatoria a partir de un data set original. En este caso podemos aplicar
+el remuestreo para hacer un cálculo más robusto del error, generando
+muestras y calculando el error para cada una de ellas.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a>aceite_pred_remuestreo <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb51-2"><a href="#cb51-2" tabindex="-1"></a>  <span class="fu">replicate</span>(</span>
+<span id="cb51-3"><a href="#cb51-3" tabindex="-1"></a>    <span class="at">n =</span> <span class="dv">10</span>,</span>
+<span id="cb51-4"><a href="#cb51-4" tabindex="-1"></a>    <span class="at">expr =</span> <span class="fu">sample_n</span>(aceite_predic, <span class="dv">500</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb51-5"><a href="#cb51-5" tabindex="-1"></a>    <span class="at">simplify =</span> <span class="cn">FALSE</span></span>
+<span id="cb51-6"><a href="#cb51-6" tabindex="-1"></a>  ),</span>
+<span id="cb51-7"><a href="#cb51-7" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">&quot;resample&quot;</span></span>
+<span id="cb51-8"><a href="#cb51-8" tabindex="-1"></a>)</span>
+<span id="cb51-9"><a href="#cb51-9" tabindex="-1"></a></span>
+<span id="cb51-10"><a href="#cb51-10" tabindex="-1"></a>errores <span class="ot">&lt;-</span> aceite_pred_remuestreo <span class="sc">%&gt;%</span></span>
+<span id="cb51-11"><a href="#cb51-11" tabindex="-1"></a>  <span class="fu">group_by</span>(resample) <span class="sc">%&gt;%</span></span>
+<span id="cb51-12"><a href="#cb51-12" tabindex="-1"></a>  <span class="fu">rmse</span>(aceite_porcentaje, .pred)</span>
+<span id="cb51-13"><a href="#cb51-13" tabindex="-1"></a></span>
+<span id="cb51-14"><a href="#cb51-14" tabindex="-1"></a>errores</span></code></pre></div>
+<pre><code>## # A tibble: 10 × 4
+##    resample .metric .estimator .estimate
+##    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+##  1 1        rmse    standard        3.10
+##  2 10       rmse    standard        2.99
+##  3 2        rmse    standard        2.99
+##  4 3        rmse    standard        3.07
+##  5 4        rmse    standard        3.27
+##  6 5        rmse    standard        3.09
+##  7 6        rmse    standard        3.03
+##  8 7        rmse    standard        3.05
+##  9 8        rmse    standard        3.07
+## 10 9        rmse    standard        2.99</code></pre>
+<p>Tenemos ahora 10 estimaciones del error calculadas a partir de cada
+submuestra. Podemos calcular el promedio de esa estimación y compararla
+con el error que obtuvimos usando el subset de testeo completo.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a>promedio <span class="ot">&lt;-</span> errores <span class="sc">%&gt;%</span> </span>
+<span id="cb53-2"><a href="#cb53-2" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">rmse_promedio =</span> <span class="fu">mean</span>(.estimate))</span></code></pre></div>
+<p>En este caso la diferencia es pequeña, ahora da 3.0657874, pero aún
+así la estimación es más robusta.</p>
+</div>
+</div>
+</div>
+<div id="por-donde-seguir-y-de-donde-salió-esto" class="section level2">
+<h2>Por donde seguir y de donde salió esto</h2>
+<p>Aquí dejamos una lista de los materiales que inspiraron este y que
+puede servir para continuar aprendiendo sobre Tidymodels.</p>
+<p>En inglés:</p>
+<ul>
+<li><a href="https://www.tmwr.org/">Tidy Modeling with R</a>, libro de
+Max Kuhn y Julia Silge</li>
+<li><a href="https://www.tidymodels.org/">Tidymodels</a>, página con la
+documentación y ejemplos</li>
+<li><a href="https://workshops.tidymodels.org/">Workshops de
+Tidymodels</a> creados por el equipo que desarrolla los paquetes</li>
+<li><a href="https://topepo.github.io/2023-latinR">An Introduction to
+tidymodels</a>, presentación en LatinR por Max Kuhn</li>
+</ul>
+<p>En español:</p>
+<ul>
+<li><a
+href="https://diegokoz.github.io/EEA2019/clase%208/tidymodels.nb.html">Tidy
+Models, una introducción</a> por Diego Kozlowski y Juan Manuel
+Barriola</li>
+</ul>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiVGlkeW1vZGVscyIKb3V0cHV0OiAKICBodG1sX2RvY3VtZW50OgogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgaGlnaGxpZ2h0OiB0YW5nbwotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpCgpsaWJyYXJ5KHRpZHl2ZXJzZSkKbGlicmFyeSh0aWR5bW9kZWxzKQoKdGhlbWVfc2V0KHRoZW1lX21pbmltYWwoKSkKYGBgCgojIyDCv1BvcnF1w6kgdGlkeW1vZGVscz8KClRpZHltb2RlbHMgZXMgZW4gcmVhbGlkYWQgdW4gY29uanVudG8gZGUgcGFxdWV0ZXMgZGUgUiBxdWUsIGFsIGlndWFsIHF1ZSBUaWR5dmVyc2UsIGJ1c2NhIHVuaWZpY2FyIGxhIHNpbnRheGlzIHkgbW9kbyBkZSB1c28gYWwgYWxyZWRlZG9yIGRlbCBtb2RlbGFkbyBlc3RhZMOtc3RpY28gZGUgZGF0b3MuIEEgZGlmZXJlbmNpYSBkZSBUaWR5dmVyc2UsIFRpZHltb2RlbHMgbm8gaW1wbGVtZW50YSBudWV2YXMgbWFuZXJhcyBkZSwgcG9yIGVqZW1wbG8sIGFwbGljYXIgZWwgbW9kZWxvIGxpbmVhbCwgc2kgbm8gcXVlIGdlbmVyYSB1bmEgaW50ZXJmYXogw7puaWNhIGEgcGFydGlyIGRlIGxhIGN1YWwgdXRpbGl6YXIgbGFzIGZ1bmNpb25lcyBxdWUgeWEgZXhpc3Rlbi4gRGUgbGEgbWlzbWEgbWFuZXJhLCBsYSBzYWxpZGEgcXVlIGdlbmVyYSBlcyBjb25zaXN0ZW50ZSBhIGxvIGxhcmdvIGRlIGRpc3RpbnRvcyBtb2RlbG9zIGUgaW1wbGVtZW50YWNpb25lcywgeSBtZWpvciBhw7puIGVuIGZvcm1hdG8gdGlkeS4KCkxvcyBwcmluY2lwYWxlcyBwYXF1ZXRlIGRlIFRpZHltb2RlbHMgc29uOgoKfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKfC0tLS0tLS0tLS0tfC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLXwtLS0tLS0tfAp8IFtgcnNhbXBsZWBdKGh0dHBzOi8vcnNhbXBsZS50aWR5bW9kZWxzLm9yZy8pICAgICB8IFBhcmEgZGl2aWRpciB5IGhhY2VyIHJlbXVlc3RyZW8gZGUgbG9zIGRhdG9zICAgICAgICAgICAgICAgICAgICB8ICFbXShodHRwczovL3d3dy50aWR5bW9kZWxzLm9yZy9pbWFnZXMvcnNhbXBsZS5wbmcpe3dpZHRoPSI1MCJ9ICAgfAp8IFtgcmVjaXBlc2BdKGh0dHBzOi8vcmVjaXBlcy50aWR5bW9kZWxzLm9yZy8pICAgICB8IFByZXByb2Nlc2FtaWVudG8gZGUgbG9zIGRhdG9zIGRlIG1hbmVyYSBvcmRlbmFkYSB5IHJlcHJvZHVjaWJsZSB8ICFbXShodHRwczovL3d3dy50aWR5bW9kZWxzLm9yZy9pbWFnZXMvcmVjaXBlcy5wbmcpe3dpZHRoPSI1MCJ9ICAgfAp8IFtgcGFyc25pcGBdKGh0dHBzOi8vcGFyc25pcC50aWR5bW9kZWxzLm9yZy8pICAgICB8IEludGVyZmF6IHVuaWZpY2FkYSBwYXJhIG1vZGVsYXIgZGF0b3MgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICFbXShodHRwczovL3d3dy50aWR5bW9kZWxzLm9yZy9pbWFnZXMvcGFyc25pcC5wbmcpe3dpZHRoPSI1MCJ9ICAgfAp8IFtgd29ya2Zsb3dzYF0oaHR0cHM6Ly93b3JrZmxvd3MudGlkeW1vZGVscy5vcmcvKSB8IE9yZ2FuaXphIGVsIHByZXByb2Nlc2FtaWVudG8sIGVsIG1vZGVsYWRvIHkgcG9zdHByb2Nlc2EgICAgICAgICB8ICFbXShodHRwczovL3d3dy50aWR5bW9kZWxzLm9yZy9pbWFnZXMvd29ya2Zsb3dzLnBuZyl7d2lkdGg9IjUwIn0gfAp8IFtgeWFyZHN0aWNrYF0oaHR0cHM6Ly95YXJkc3RpY2sudGlkeW1vZGVscy5vcmcvKSB8IE1pZGUgbGEgZWZlY3RpdmlkYWQgZGUgbG9zIG1vZGVsb3MgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICFbXShodHRwczovL3d3dy50aWR5bW9kZWxzLm9yZy9pbWFnZXMveWFyZHN0aWNrLnBuZyl7d2lkdGg9IjUwIn0gfAp8IFtgYnJvb21gXShodHRwczovL2Jyb29tLnRpZHltb2RlbHMub3JnLykgICAgICAgICB8IFJlc3VtZSBsYSBzYWxpZGEgZGUgbW9kZWxvcyBlbiBmb3JtYXRvIHRpZHkgICAgICAgICAgICAgICAgICAgICB8ICFbXShodHRwczovL3d3dy50aWR5bW9kZWxzLm9yZy9pbWFnZXMvYnJvb20ucG5nKXt3aWR0aD0iNTAifSAgICAgfAoKcGVybyBoYXkgbXVjaG9zIG90cm9zIGNvbiBvYmpldGl2b3MgZXNwZWPDrWZpY29zIHF1ZSBjb21wbGV0YW4gZWwgdW5pdmVyc28gZGUgdGlkeW1vZGVscy4KCiMjIEVsIHByb2Nlc28gZGUgbW9kZWxhZG8gZGUgZGF0b3MKCkVzdGUgZGlhZ3JhbWEgbXVlc3RyYSBlbCBwcm9jZXNvIGRlIG1vZGVsYWRvIGRlIGRhdG9zIHRlw7NyaWNvLiBQb3Igc3VwdWVzdG8sIGVuIGxhIHJlYWxpZGFkIHZhbW9zIHkgdmVuaW1vcyBlbnRyZSBsb3MgZGlzdGludG9zIHBhc29zIGhhc3RhIGFqdXN0YXIgY2FkYSBkZXRhbGxlLiBQZXJvIGVzIGltcG9ydGFudGUgdGVuZXIgZW4gY3VlbnRhIGFsZ3Vub3MgZGV0YWxsZXM6CgotICAgKipDw7NtbyBhcHJvdmVjaGFyIGxvcyBkYXRvczoqKiBlcyBpbXBvcnRhbnRlIGhhY2VyIHVuICJwcmVzdXB1ZXN0byIgcGFyYSBwbGFuaWZpY2FyIGPDs21vIHZhbW9zIGEgdXNhciBsb3MgZGF0b3MuIFNpIHVzYW1vcyBlbCAxMDAlIGRlIG51ZXN0cmEgbXVlc3RyYSBlbiBlbCBlbnRyZW5hbWllbnRvIGRlIHVuIG1vZGVsbywgbHVlZ28gbm8gcG9kcmVtb3MgaGFjZXIgbmluZ8O6biB0aXBvIGRlIHZlcmlmaWNhY2nDs24gKGVsIG1vZGVsbyB5YSBjb25vY2UgbG9zIGRhdG9zLCBjdWFscXVpZXIgcmVzdWx0YWRvIG5vIHNlcsOhIHbDoWxpZG8pLiBQb3IgZXNvIG5lY2VzaXRhbW9zIGRpdmlkaXIgbG9zIGRhdG9zIGVuIChhbCBtZW5vcykgZW50cmVuYW1pZW50byB5IHRlc3Rlby4gVXNhcmVtb3MgYHJzYW1wbGVgIHBhcmEgZXN0YSB0YXJlYS4KCi0gICAqKlF1w6kgbW9kZWxvIHV0aWxpemFyOioqIGxhIG1heW9yw61hIGRlIGxhcyB2ZWNlcyBubyBzYWJyZW1vcyBjdWFsIGVzIGVsIG1lam9yIG1vZGVsbyBhIGFwbGljYXIsIGRlcGVuZGVyw6EgZW4gcGFydGUgZGUgbnVlc3RybyBvYmpldGl2bzogcXVlcmVtb3MgaGFjZXIgZGVzY3JpYmlyLCBoYWNlciBpbmZlcmVuY2lhcyBvIHByZWRlY2lyIGEgcGFydGlyIGRlIGxvcyBkYXRvcz8gTG8gaW50ZXJlbnNhbnRlIGVzIHByb2JhciBkaXN0aW50b3MgbW9kZWxvcyBwYXJhIHF1ZWRhcm5vcyBjb24gZWwgbWVqb3IgbyB1dGlsaXphciB1bmEgY29tYmluYWNpw7NuLiBQYXJhIGVzdG8gZXMgbmVjZXNhcmlvIGhhY2VyIHVuIHJlbXVlc3RyZW8gZGUgbG9zIGRhdG9zIGRlIGVudHJlbmFtaWVudG8geSBhc8OtIGhhY2VyIGNvbXBhcmFjaW9uZXMgdsOhbGlkYXMuCgotICAgKipMYSB2ZXJpZmljYWNpw7NuOioqIGVzIGltcG9ydGFudGUgaGFjZXIgdW5hIHZlcmlmaWNhY2nDs24gdGFudG8gY3VhbGl0YXRpdmEgKHZpc3VhbCkgY29tbyBjdWFudGl0YXRpdmEgY29uIGxvcyBlbCBzdWJzZXQgZGUgdGVzdGVvLCBwZXJvIG51bmNhIGNvbiBsb3MgZGF0b3MgZGUgZW50cmVuYW1pZW50byEKCiFbXShpbWcvbW9kZWxhZG8ucG5nKQoKIyMgRGF0b3MgZGUgY3VsdGl2b3MKClZhbW9zIGEgdHJhYmFqYXIgY29uIGRhdG9zIGRlIHJlbmRpbWllbnRvIGRlIGN1bHRpdm9zIHF1ZSBpbmNsdXllbiBpbmZvcm1hY2nDs24gc29icmUgbGEgZmxvcmFjacOzbiwgbGEgYWx0dXJhIGRlbCBjdWx0aXZvLCBsYSBjYW1wYcOxYSwgZWwgdGlwbyBkZSBlbnNheW8sIGxhIGRpc3RhY2lhIGVudHJlIHN1cmNvcyBlbnRyZSBvdHJhcyBjb3Nhcy4gQ29uIGVzdGEgaW5mb3JtYWNpw7NuIGludGVudGFyZW1vcyBnZW5lcmFyIHVuIG1vZGVsbyBxdWUgbm9zIHBlcm1pdGEgcHJlZGVjaXIgbGEgdmFyaWFibGUgYWNlaXRlX3BvcmNlbnRhamUuCgoKYGBge3IgbGVjdHVyYSBkZSBkYXRvc30KY3VsdGl2b3MgPC0gcmVhZF9jc3YoImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9wYW9jb3JyYWxlcy9pbnRyby10aWR5bW9kZWxzLWFncm8vbWFpbi9kYXRvcy9jdWx0aXZvcy5jc3YiKQpgYGAKCkxhIHZhcmlhYmxlIGBhY2VpdGVfcG9yY2VudGFqZWAgdGllbmUgbGEgc2lndWllbnRlIGRpc3RyaWJ1Y3XDs246CgpgYGB7ciBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpjdWx0aXZvcyAlPiUgCiAgZ2dwbG90KGFlcyhhY2VpdGVfcG9yY2VudGFqZSkpICsKICBnZW9tX2hpc3RvZ3JhbShjb2xvciA9ICJ3aGl0ZSIpICsKICBnZW9tX3J1ZyhhbHBoYSA9IDAuMSkKYGBgCgojIyMgUHJlcGFyYW5kbyBsb3MgZGF0b3MKCkVzdGEgYmFzZSBkZSBkYXRvcyB0aWVuZSBlbiB0b3RhbCBgciBucm93KGN1bHRpdm9zKWAgcmVnaXN0cm9zIGRlIGRpc3RpbnRvcyBlbnNheW9zIGRlIGN1bHRpdm9zLiBWYW1vcyBhIGRpdmlkaXIgbG9zIGRhdG9zIGVuIDIgc3Vic2V0cyBkZSBlbnRyZW5hbWllbnRvIChgY3VsdGl2b3NfdHJhaW5gKSB5IHRlc3RlbyAoYGN1bHRpdm9zX3Rlc3RgKS4gRW4gcHJpbWVyIGx1Z2FyIGxhIGZ1bmNpw7NuICBgaW5pdGlhbF9zcGxpdCgpYCBkaXZpZGUgbG9zIGRhdG9zIGVuIDIgdXRpbGl6YW5kbyBlbCBhcmd1bWVudG8gYHByb3BgIHBhcmEgZGVmaW5pciBjdWFudG9zIGRhdG9zIGlyYW4gYSBjYWRhIHN1YnNldC4gRW4gZXNlIGNhc28gdXNhbW9zIHBvciBkZWZlY3RvIGAzLzRgLCBlcyBkZWNpciwgZWwgNzUlIGRlIGxvcyBkYXRvcyBpcmFuIGFsIGVudHJlbmFtaWVudG8geSBlbCAyNSUgcXVlZGFyw6EgcGFyYSBlbCB0ZXN0ZW8uIERlY2lkaXIgZXN0ZSBwb3JjZW50YWplIGVzIHVuIHByb2JsZWEgZW4gc2kgbWlzbW8hIAoKYGBge3J9CnNldC5zZWVkKDkxKQpjdWx0aXZvc19zcGxpdCA8LSBpbml0aWFsX3NwbGl0KGN1bHRpdm9zLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgcHJvcCA9IDMvNCkKCmN1bHRpdm9zX3NwbGl0CmBgYAoKRW4gc2VndW5kbyBsdWdhciwgY29uIGB0cmFpbmluZygpYCB5IGB0ZXN0aW5nKClgIGV4dHJhZW1vcyBsb3MgMiBzdWJzZXRzIGRlIGRhdG9zIGEgcGFydGlyIGRlbCBvYmpldG8gcXVlIGdlbmVyYW1vcyByZWNpw6luLiAKCmBgYHtyfQpjdWx0aXZvc190cmFpbiA8LSB0cmFpbmluZyhjdWx0aXZvc19zcGxpdCkKY3VsdGl2b3NfdGVzdCA8LSB0ZXN0aW5nKGN1bHRpdm9zX3NwbGl0KQpgYGAKClZlYW1vcyBhaG9yYSBxdWUgcGludGEgdGllbmUgbnVlc3RyYSB2YXJpYWJsZSBkZSBpbnRlcmVzIGVuIHJlbGFjacOzbiBjb24gb3RyYXMsIHBvciBlamVtcGxvIGBkZW5zaWRhZF9zZW1gLiBJbmljaWFsbWVudGUgbm8gcGFyZWNlIGhhYmVyIHVuYSByZWxhY2nDs24gbXV5IGNsYXJhLgoKYGBge3IgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KY3VsdGl2b3NfdHJhaW4gJT4lIAogIGdncGxvdChhZXMoZGVuc2lkYWRfc2VtLCBhY2VpdGVfcG9yY2VudGFqZSkpICsKICBnZW9tX3Ntb290aCgpIApgYGAKClNpbiBlbWJhcmdvIHNpIGluY2x1aW1vcyBgdGlwb19zaWVtcHJhYCBjb21vIHRlcmNlcmEgdmFyaWFibGUsIHZlbW9zIHF1ZSBlc3RhIG51ZXZhIHZhcmlhYmxlIHBvZHLDrWEgbGxlZ2FyIGEgZXhwbGljYXIsIGVuIHBhcnRlIGVsIGNvbXBvcnRhbWllbnRvIGRlIGBhY2VpdGVfcG9yY2VudGFqZWAuIAoKYGBge3IgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KY3VsdGl2b3NfdHJhaW4gJT4lIAogIGdncGxvdChhZXMoZGVuc2lkYWRfc2VtLCBhY2VpdGVfcG9yY2VudGFqZSkpICsKICBnZW9tX3Ntb290aChhZXMoY29sb3IgPSB0aXBvX3NpZW1icmEpKSAKYGBgCgpDb21lbmNlbW9zIGFob3JhIGNvbiBlbCBwcmVwcm9jZXNhbWllbnRvIGRlIGxvcyBkYXRvcy4gUGFyYSBlc3RvIGNyZWFyZW1vcyB1bmEgKnJlY2V0YSosIGVzIGRlY2lyIHVuYSBzZXJpZSBkZSBwYXNvcyBxdWUgcmVhbGljZW4gbGFzIHRyYW5zZm9ybWFjaW9uZXMgbmVjZXNhcmlhIHBhcmEgZGVqYXIgbG9zIGRhdG9zIGxpc3RvcyBwYXJhIGVsIG1vZGVsYWRvLiBBIGRpZmVyZW5jaWEgZGUgb3RyYXMgaW1wbGVtZW50YWNpb25lcyBjb24gdGlkeW1vZGVsIHNlcGFyYW1vcyBjb21wbGV0YW1lbnRlIGVsIHByZXByb2Nlc2FtaWVudG8gZGVsIG1vZGVsYWRvLiBEZSBlc3RhIG1hbmVyYSAqbW9kdWxhcml6YW1vcyogZWwgcHJvY2VzbyB5IHBvZGVtb3MgdXRpbGl6YXIgbGEgbWlzbWEgcmVjZXRhIHBhcmEgYXBsaWNhciBtb2RlbG9zIGRpc3RpbnRvcy4gCgpDcmVhcmVtb3MgbGEgcmVjZXRhIGNvbiBsb3MgZGF0b3MgZGUgZW50cmVuYW1pZW50byBwZXJvIGx1ZWdvIHBvZHJlbW9zIGFwbGljYXIgZXN0b3MgcGFzb3MgdGFtYmnDqW4gYSBsb3MgZGF0b3MgZGUgdGVzdGVvLiBJbmljaWFtb3MgbGEgcmVjZXRhIGNvbiBsYSBmdW5jacOzbiBgcmVjaXBlKClgIGluZGljYW5kbyBsYSBmb3JtdWxhLCBlbiBlc3RlIGNhc28gcXVlcmVtb3MgZXZhbHVhciBsYSByZWxhY2nDs24gZGUgYGFjZWl0ZV9wb3JjZW50YWplYCBlbiBmdW5jacOzbiBkZSB0b2RhcyBsYXMgb3RyYXMgdmFyaWFibGVzLgoKYGBge3J9CnJlY2V0YV9hY2VpdGUgPC0gCiAgcmVjaXBlKGFjZWl0ZV9wb3JjZW50YWplIH4gLiwgZGF0YSA9IGN1bHRpdm9zX3RyYWluKSAKYGBgCgpFbCBzaWd1aWVudGUgcGFzbyBlcyB0cmFiYWphciBjb24gcHJlZGljdG9yZXMgY2F0ZWfDs3JpY29zLCBwYXJhIGVzdG8gc3VtYW1vcyB1biBwYXNvIGEgbGEgcmVjZXRhIGBzdGVwX2R1bW15KClgIHF1ZSBjb252aWVydGUgbGFzIHZhcmlhYmxlcyBub21pbmFsZXMgKGNhcmFjdGVyZXMgbyBmYWN0b3JlcykgZW4gdmFyaWFibGVzIG51bcOpcmljYXMgYmluYXJpYXMuIEVuIGVzdGUgY2FzbyBhcGxpY2Ftb3MgZWwgcGFzbyBhIHRvZG9zIG9zIHByZWRpY3RvcmVzIG5vbWluYWxlcy4gQXF1w60gdmVtb3MgYWRlbcOhcyBxdWUgbGEgcmVjZXRhIGVzIGNvbXBhdGlibGUgY29uIGVsIHVzbyBkZSBsYSBgJT4lYCBwb3IgbG8gcXVlIHBvZGVtb3MgaXIgc3VtYW5kbyBsb3MgcGFzbyB1bm8gZGV0csOhcyBkZWwgb3Ryby4KCmBgYHtyfQpyZWNldGFfYWNlaXRlIDwtIAogIHJlY2lwZShhY2VpdGVfcG9yY2VudGFqZSB+IC4sIGRhdGEgPSBjdWx0aXZvc190cmFpbikgJT4lIAogIHN0ZXBfZHVtbXkoYWxsX25vbWluYWxfcHJlZGljdG9ycygpKQpgYGAKCgpgYGB7ciBlY2hvPUZBTFNFfQpwcmludChyZWNldGFfYWNlaXRlKQpgYGAKCkVuIGVsIHNpZ3VpZW50ZSBwYXNvIGBzdGVwX3p2KClgIHJlbXVldmUgbGFzIHZhcmlhYmxlcyBxdWUgY29udGllbmVuIHNvbG8gMSB2YWxvciDDum5pY28gKHNpIGxhcyBodWJpZXJhKSwgZXMgZGVjaXIgY29uIHZhcmlhbnphIGNlcm8uCgpgYGB7cn0KcmVjZXRhX2FjZWl0ZSA8LSAKICByZWNpcGUoYWNlaXRlX3BvcmNlbnRhamUgfiAuLCBkYXRhID0gY3VsdGl2b3NfdHJhaW4pICU+JSAKICBzdGVwX2R1bW15KGFsbF9mYWN0b3JfcHJlZGljdG9ycygpKSAlPiUgCiAgc3RlcF96dihhbGxfcHJlZGljdG9ycygpKQpgYGAKCkPDs21vIHZpbW9zIHF1ZSBoYXkgYWxndW5hIHJlbGFjacOzbiBlbnRyZSBgZGVuc2lkYWRfc2VtYCB5IGB0aXBvX3NpZW1icmFgIHZhbW9zIGEgc3VtYXIgdW4gbnVldm8gcGFzbyBxdWUgdGVuZ2EgZW4gY3VlbnRhIGVzYSBpbnRlcmFjY2nDs24uIAoKYGBge3J9CnJlY2V0YV9hY2VpdGUgPC0gCiAgcmVjaXBlKGFjZWl0ZV9wb3JjZW50YWplIH4gLiwgZGF0YSA9IGN1bHRpdm9zX3RyYWluKSAlPiUgCiAgc3RlcF9kdW1teShhbGxfZmFjdG9yX3ByZWRpY3RvcnMoKSkgJT4lIAogIHN0ZXBfenYoYWxsX3ByZWRpY3RvcnMoKSkgJT4lIAogIHN0ZXBfaW50ZXJhY3QofiBzdGFydHNfd2l0aCgiZGVuc2lkYWRfc2VtIik6c3RhcnRzX3dpdGgoInRpcG9fc2llbWJyYSIpKQpgYGAKCkZpbmFsbWVudGUgYXBsaWNhbW9zIGBzdGVwX25vcm1hbGl6ZSgpYCBwYXJhIG5vcm1hbGl6YXIgdG9kb3MgbG9zIHByZWRpY3RvcmVzLiAKCmBgYHtyfQpyZWNldGFfYWNlaXRlIDwtIAogIHJlY2lwZShhY2VpdGVfcG9yY2VudGFqZSB+IC4sIGRhdGEgPSBjdWx0aXZvc190cmFpbikgJT4lIAogIHN0ZXBfZHVtbXkoYWxsX2ZhY3Rvcl9wcmVkaWN0b3JzKCkpICU+JSAKICBzdGVwX3p2KGFsbF9wcmVkaWN0b3JzKCkpICU+JSAKICBzdGVwX2ludGVyYWN0KH4gc3RhcnRzX3dpdGgoImRlbnNpZGFkX3NlbSIpOnN0YXJ0c193aXRoKCJ0aXBvX3NpZW1icmEiKSkgJT4lIAogIHN0ZXBfbm9ybWFsaXplKGFsbF9udW1lcmljX3ByZWRpY3RvcnMoKSkKYGBgCgpZIGFob3JhIHNpLCB0ZW5lbW9zIG51ZXN0cmEgcmVjZXRhLgoKYGBge3J9CnJlY2V0YV9hY2VpdGUKYGBgCgoKRXN0YSByZWNldGEgYWRlbcOhcywgZGVmaW5lIGNsYXJhbWVudGUgbGFzIHRyYW5zZm9ybWFjaW9uZXMgcXVlIGhhY2Vtb3MgZW4gbG9zIGRhdG9zIHBvciBsbyBxdWUgZXMgcmVwcm9kdWNpYmxlLgoKUG9kcsOtYW1vcyBlbmNhZGVuYXIgbGEgZnVuY2nDs24gYHByZXAoKWAgcGFyYSAqcHJlcGFyYXIqIGxvcyBkYXRvcyB1c2FuZG8gbGEgcmVjZXRhIHBlcm8gZW4gbnVlc3RybyBjYXNvIGVqZWN1dGFyZW1vcyB0b2RvcyBsb3MgcGFzb3MgbmVjZXNhcmlvcyBlbiB1biAqd29ya2Zsb3cqLgoKIyMjIERlZmluaWVuZG8gZWwgbW9kZWxvCgpFbCBzaWd1aWVudGUgcGFzbyBlcyBkZWZpbmlyIGVsIG1vZGVsbyBhIGFwbGljYXIuIE51ZXZhbWVudGUgdXNhbW9zIHRpZHltb2RlbHMgcXVlIHRpZW5lbiBmdW5jaW9uZXMgcXVlIGZ1bmNpb25hbiBjb21vIGludGVyZmF6IGNvbiBpbXBsZW1lbnRhY2lvbmVzIGVuIGRpc3RpbnRvcyBwYXF1ZXRlcy4gUG9kw6lzIHJldmlzYXIgbGEgbGlzdGEgZGUgbW9kZWxvcyBkaXNwb25pYmxlcyBbYWPDoV0oaHR0cHM6Ly9wYXJzbmlwLnRpZHltb2RlbHMub3JnL3JlZmVyZW5jZS9pbmRleC5odG1sI21vZGVscykuIEVuIG51ZXN0cm8gY2FzbyB2YW1vcyBhIGFycmFuY2FyIGNvbiBlbCBtb2RlbG8gbGluZWEgdXNhbmRvIGxhIGZ1bmNpw7NuIGBsaW5lYXJfcmVnKClgLgoKCmBgYHtyfQptb2RlbG9fbGluZWFsIDwtIAogIGxpbmVhcl9yZWcoKSAKYGBgCgpQb3IgZGVmZWN0byBlc3RhIGZ1bmNpw7NuIHVzYSBgbG1gIGRlbCBwYXF1ZXRlIGBzdGF0c2AgZGUgUiBiYXNlIHBlZHJvIHBvZHLDrWFtb3MgdXNhciBtdWNob3Mgb3Ryb3MgKmVuZ2luZXMqLCBlcyBkZWNpciwgb3RyYXMgaW1wbGVtZW50YWNpb25lcyBhbCBtb2RlbG8gbGluZWFsIGNvbW8gYGdsbWAgeSBgZ2xtZW50YC4gUGFyYSBzZXRlYXIgdW4gZW5naW5lIHVzYW1vcyBgc2V0X2VuZ2luZSgpYDoKCgpgYGB7cn0KbW9kZWxvX2xpbmVhbCA8LSAKICBsaW5lYXJfcmVnKCkgJT4lIAogIHNldF9lbmdpbmUoImxtIikKYGBgCgpFbiBhbGd1bm9zIGNhc29zIG5lY2VzaXRhcmVtb3MgdGVuZXIgcGFxdWV0ZXMgZXNwZWPDrWZpY29zIGluc3RhbGFkb3MsIHBvciBlamVtcGxvIGBsbWVgIHJlcXVpZXJlIHVuIGV4dGVuc2lvbiBkZWwgcGFxdWV0ZSBgcGFyc25pcGAuIAoKYGBge3J9Cm1vZGVsb19saW5lYWwKYGBgCgpZYSB0ZW5lbW9zIGVsIHNlZ3VuZG8gcGFzbywgZWwgbW9kZWxvLiBQZXJvIGNvbW8gaGFicsOhcyBub3RhZG8sIGVuIG5pbmfDum4gbW9tZW50byBgbW9kZWxvX2xpbmVhbGAgc2UgY3J1esOzIGNvbiBudWVzdHJvcyBkYXRvcy4gVmFtb3MgYSB1bmlyIHRvZG8gZW4gdW4gd29ya2Zsb3cuCgojIyMgVW5pbmVuZG8gdG9kbyAKClVuICp3b3JrZmxvdyogZXMgdW4gb2JlanRvIHF1ZSBpbmNvcnBvcmEgdG9kYSBsYSBpbmZvcm1hY2nDs24gbmVjZXNhcmlhIHBhcmEgYWp1c3RhciB5IGhhY2VyIHByZWRpY2Npb25lcyBlbiBiYXNlIGEgdW4gbW9kZWxvLiBJbmljaWFtb3MgbnVlc3RybyB3b3JrZmxvdyBjb24gbGEgZnVuY2nDs24gYHdvcmtmbG93KClgOgoKYGBge3J9CndmbG93X2xtIDwtIAogIHdvcmtmbG93KCkKYGBgCgpZIGx1ZWdvIGNvbiBsYXMgZnVuY2lvbmVzIGBhZGRfbW9kZWwoKWAgeSBgYWRkX3JlY2lwZSgpYCBhZ3JlZ2Ftb3MgZWwgbW9kZWxvIHkgbGEgcmVjZXRhIHF1ZSBjcmVhbW9zIHJlY2nDqW4uIAoKYGBge3J9CndmbG93X2xtIDwtIAogIHdvcmtmbG93KCkgJT4lIAogIGFkZF9tb2RlbChtb2RlbG9fbGluZWFsKSAlPiUgCiAgYWRkX3JlY2lwZShyZWNldGFfYWNlaXRlKQpgYGAKCkNvbW8gdmVtb3MgZWwgb2JlanRvIGB3Zmxvd19sbWAgdGllbmUgbGEgaW5mb3JtYWNpw7NuIGRlbCBtb2RlbG8gKGBsaW5lYXJfcmVnKClgKSB5IGVsIHByZXByb2Nlc2FtaWVudG8gY29uIG51ZXN0cmEgcmVjZXRhLgoKYGBge3J9CndmbG93X2xtCmBgYAoKQ29uIGVsIHdvcmtmbG93IGNvbXBsZXRvIGFob3JhIHNpIHBvZGVtb3MgYWp1c3RhciBlbCBtb2RlbG8gdXNhbmRvIGxvcyBkYXRvcyBkZSBlbnRyZW5hbWllbnRvOgoKYGBge3J9Cm1vZGVsb19maXQgPC0gZml0KHdmbG93X2xtLCBkYXRhID0gY3VsdGl2b3NfdHJhaW4pCmBgYAoKRWwgb2JqZXRvIGBtb2RlbG9fZml0YCBjb250aWVuZSBtdWNow61zaW1hIGluZm9ybWFjacOzbiBpbmNsdXllbmRvIGVsIG1vZGVsbywgbGEgcmVjZXRhIHkgZW50cmUgb3RyYXMgY29zYXMgbm9zIHBlcm1pdGlyw6EgZXh0cmFlciBwcmVkaWNjaW9uZXMuIEVzdG8gbG8gaGFjZW1vcyBjb24gbGEgZnVuY2nDs24gYHByZWRpY3RgCgpgYGB7cn0KcHJlZGljdChtb2RlbG9fZml0LCBuZXdfZGF0YSA9IGN1bHRpdm9zX3Rlc3QpICU+JSAKICBoZWFkKCkKYGBgCgpBZGVtw6FzIGRlIHByZWRlY2lyIGVsIHZhbG9yIG1lZGlvLCB0YW1iacOpbiBwb2RlbW9zIGVzdGltYXIgaW50ZXJ2YWxvcyBkZSBjb25maWFuemEgY29uIGxhIG1pc21hIGZ1bmNpw7NuOgoKYGBge3J9Cm1lYW5fcHJlZGljdCA8LSBwcmVkaWN0KG1vZGVsb19maXQsIGN1bHRpdm9zX3Rlc3QpCgpjb25mX2ludF9wcmVkIDwtIHByZWRpY3QobW9kZWxvX2ZpdCwgCiAgICAgICAgICAgICAgICAgICAgICAgICBuZXdfZGF0YSA9IGN1bHRpdm9zX3Rlc3QsIAogICAgICAgICAgICAgICAgICAgICAgICAgdHlwZSA9ICJjb25mX2ludCIpCmBgYApFc3RvIGdlbmVyYSB1biBwYXIgZGUgdGliYmxlcyBjb24gY29sdW1uYXMgYC5wcmVkX2xvd2VyYCB5IGAucHJlZF91cHBlcmAgcXVlIHNvbiBsb3MgbMOtbWl0ZXMgaW5mZXJpb3JlcyB5IHN1cGVyaW9yZXMgZGUgZXNlIGludGVydmFsbyBkZSBjb25maWFuemEuIAoKIyMjIFZlcmlmaWNhY2nDs24KClZlYW1vcyBjb21vIGxlIGZ1ZSBhIG51ZXN0cm8gbW9kZWxvIChzcG9pbGVyIGFsZXJ0OiBiYXN0YW50ZSBtYWwpLiBQcmltZXJvIHZhbW9zIGEgZ3JhZmljYXIgbG9zIHZhbG9yZXMgcHJlZGljaG9zIGRlIGBhY2VpdGVfcG9yY2VudGFqZWAgZW4gZnVuY2nDs24gZGUgbG9zIG9ic2VydmFkb3MgeSBxdWUgdGVuZW1vcyBlbiBudWVzdHJvIHN1YnNldCBkZSB0ZXN0ZW8uCgpgYGB7ciBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQphY2VpdGVfcHJlZGljIDwtIAogIGN1bHRpdm9zX3Rlc3QgJT4lIAogIGJpbmRfY29scyhtZWFuX3ByZWRpY3QpIAoKZ2dwbG90KGFjZWl0ZV9wcmVkaWMsIGFlcyhhY2VpdGVfcG9yY2VudGFqZSwgLnByZWQpKSArCiAgZ2VvbV9hYmxpbmUoc2xvcGUgPSAxLCBpbnRlcmNlcHQgPSAwLCBjb2xvciA9ICJkYXJrb3JhbmdlIikgKwogICAgICBnZW9tX3BvaW50KGFscGhhID0gMC4xKSArCiAgZ2VvbV9zbW9vdGgobWV0aG9kID0gImxtIikgKwogIGxhYnMoeCA9ICJPYnNlcnZhZG8iLCB5ID0gIlByZWRpY2hvIikgKwogIGNvb3JkX2VxdWFsKHhsaW0gPSBjKDI5LDYwKSwgeWxpbSA9IGMoMjksIDYwKSkKCmBgYAoKU2kgbnVlc3RybyBtb2RlbG8gZnVlcmEgInBlcmZlY3RvIiB0b2RvcyBsb3MgcHVudG9zIGRlYmVyw61hbiBjYWVyIGFscmVkZWRvciBkZSBsYSBsaW5lYSBuYXJhbmphLiBTaW4gZW1iYXJnbyB0ZW5lbW9zIHB1bnRvcyBxdWUgc2UgYWxlamFuIGJhc3RhbnRlLiBEZXNkZSBlc3RlIHB1bnRvIGRlIHZpc3RhIG3DoXMgY3VhbGl0YXRpdm8gdmVtb3MgcXVlIGVsIG1vZGVsbyBubyBlcyBtdXkgYnVlbm8uIENhbGN1bGVtb3MgYWhvcmEgY3VhbCBzZXJpYSBlbCBlcnJvciBxdWUgY29tZXRlcsOtYW1vcyBzaSB1c2Ftb3MgZWwgbW9kZWxvIHBhcmEgcHJlZGVjaXIgdW4gdmFsb3IgZGUgYGFjZWl0ZV9wb3JjZW50YWplYCBlbiBlbCBmdXR1cm8uCgoKYGBge3J9CnJtc2UoYWNlaXRlX3ByZWRpYywgYWNlaXRlX3BvcmNlbnRhamUsIC5wcmVkKQpgYGAKCkVuIGVzdGUgY2FzbyBjYWxjdWxhbW9zIGxhIHJhaXogZGVsIGVycm9yIGN1YWRyw6F0aWNvIG1lZGlvIG8gcm1zZSBjb24gbGEgZnVuY2nDs24gYHJtc2UoKWAgZGVsIHBhcXVlZSBgeWFyZHNpY2tgLiBFbCByZXN1bHRhZG8gZXMgYHIgcm1zZShhY2VpdGVfcHJlZGljLCBhY2VpdGVfcG9yY2VudGFqZSwgLnByZWQpJC5lc3RpbWF0ZWAsIGVzdG8gc2lnbmlmaWNhIHF1ZSBhbCBlc3RpbWFyIGBhY2VpdGVfcG9yY2VudGFqZWAgY29uIGVsIG1vZGVsbyBjb21ldGVtb3MgZW4gcHJvbWVkaW8gdW4gZXJyb3IgZGUgYHIgcm1zZShhY2VpdGVfcHJlZGljLCBhY2VpdGVfcG9yY2VudGFqZSwgLnByZWQpJC5lc3RpbWF0ZWAuCgojIyMjIEV4dHJhIQoKVW5hIGhlcnJhbWllbnRhIG11eSBwb2Rlcm9zYSBxdWUgaW1wbGVtZW50YSBUaWR5bW9kZWxzIGVzIGVsIHJlbXVlc3RyZW8uIEVzdG8gZXMgZ2VuZXJhciBzdWJzZXRzIGRlIGRhdG9zIHRvbWFuZG8gZGF0b3MgZGUgbWFuZXJhIGFsZWF0b3JpYSBhIHBhcnRpciBkZSB1biBkYXRhIHNldCBvcmlnaW5hbC4gRW4gZXN0ZSBjYXNvIHBvZGVtb3MgYXBsaWNhciBlbCByZW11ZXN0cmVvIHBhcmEgaGFjZXIgdW4gY8OhbGN1bG8gbcOhcyByb2J1c3RvIGRlbCBlcnJvciwgZ2VuZXJhbmRvIG11ZXN0cmFzIHkgY2FsY3VsYW5kbyBlbCBlcnJvciBwYXJhIGNhZGEgdW5hIGRlIGVsbGFzLiAKCmBgYHtyfQphY2VpdGVfcHJlZF9yZW11ZXN0cmVvIDwtIGJpbmRfcm93cygKICByZXBsaWNhdGUoCiAgICBuID0gMTAsCiAgICBleHByID0gc2FtcGxlX24oYWNlaXRlX3ByZWRpYywgNTAwLCByZXBsYWNlID0gVFJVRSksCiAgICBzaW1wbGlmeSA9IEZBTFNFCiAgKSwKICAuaWQgPSAicmVzYW1wbGUiCikKCmVycm9yZXMgPC0gYWNlaXRlX3ByZWRfcmVtdWVzdHJlbyAlPiUKICBncm91cF9ieShyZXNhbXBsZSkgJT4lCiAgcm1zZShhY2VpdGVfcG9yY2VudGFqZSwgLnByZWQpCgplcnJvcmVzCmBgYAoKVGVuZW1vcyBhaG9yYSAxMCBlc3RpbWFjaW9uZXMgZGVsIGVycm9yIGNhbGN1bGFkYXMgYSBwYXJ0aXIgZGUgY2FkYSBzdWJtdWVzdHJhLiBQb2RlbW9zIGNhbGN1bGFyIGVsIHByb21lZGlvIGRlIGVzYSBlc3RpbWFjacOzbiB5IGNvbXBhcmFybGEgY29uIGVsIGVycm9yIHF1ZSBvYnR1dmltb3MgdXNhbmRvIGVsIHN1YnNldCBkZSB0ZXN0ZW8gY29tcGxldG8uCgpgYGB7cn0KcHJvbWVkaW8gPC0gZXJyb3JlcyAlPiUgCiAgc3VtbWFyaXNlKHJtc2VfcHJvbWVkaW8gPSBtZWFuKC5lc3RpbWF0ZSkpCmBgYAoKRW4gZXN0ZSBjYXNvIGxhIGRpZmVyZW5jaWEgZXMgcGVxdWXDsWEsIGFob3JhIGRhIGByIHByb21lZGlvJHJtc2VfcHJvbWVkaW9gLCBwZXJvIGHDum4gYXPDrSBsYSBlc3RpbWFjacOzbiBlcyBtw6FzIHJvYnVzdGEuCgojIyBQb3IgZG9uZGUgc2VndWlyIHkgZGUgZG9uZGUgc2FsacOzIGVzdG8KCkFxdcOtIGRlamFtb3MgdW5hIGxpc3RhIGRlIGxvcyBtYXRlcmlhbGVzIHF1ZSBpbnNwaXJhcm9uIGVzdGUgeSBxdWUgcHVlZGUgc2VydmlyIHBhcmEgY29udGludWFyIGFwcmVuZGllbmRvIHNvYnJlIFRpZHltb2RlbHMuCgpFbiBpbmdsw6lzOgoKKiBbVGlkeSBNb2RlbGluZyB3aXRoIFJdKGh0dHBzOi8vd3d3LnRtd3Iub3JnLyksIGxpYnJvIGRlIE1heCBLdWhuIHkgSnVsaWEgU2lsZ2UKKiBbVGlkeW1vZGVsc10oaHR0cHM6Ly93d3cudGlkeW1vZGVscy5vcmcvKSwgcMOhZ2luYSBjb24gbGEgZG9jdW1lbnRhY2nDs24geSBlamVtcGxvcwoqIFtXb3Jrc2hvcHMgZGUgVGlkeW1vZGVsc10oaHR0cHM6Ly93b3Jrc2hvcHMudGlkeW1vZGVscy5vcmcvKSBjcmVhZG9zIHBvciBlbCBlcXVpcG8gcXVlIGRlc2Fycm9sbGEgbG9zIHBhcXVldGVzCiogW0FuIEludHJvZHVjdGlvbiB0byB0aWR5bW9kZWxzXShodHRwczovL3RvcGVwby5naXRodWIuaW8vMjAyMy1sYXRpblIpLCBwcmVzZW50YWNpw7NuIGVuIExhdGluUiBwb3IgTWF4IEt1aG4KCkVuIGVzcGHDsW9sOgoKKiBbVGlkeSBNb2RlbHMsIHVuYSBpbnRyb2R1Y2Npw7NuXShodHRwczovL2RpZWdva296LmdpdGh1Yi5pby9FRUEyMDE5L2NsYXNlJTIwOC90aWR5bW9kZWxzLm5iLmh0bWwpIHBvciBEaWVnbyBLb3psb3dza2kgeSBKdWFuIE1hbnVlbCBCYXJyaW9sYQ==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("04-tidymodels.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

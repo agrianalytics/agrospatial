@@ -9,6 +9,8 @@ navbar:
           href: 02-r-vectores.html
         - text: Trabajando con raster
           href: 03-r-rasters.html
+        - text: Tidymodels
+          href: 04-tidymodels.html
   right:
     - text: Repo
       href: https://github.com/agrianalytics/agrospatial/
