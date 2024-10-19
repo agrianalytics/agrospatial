@@ -1,0 +1,76 @@
+---
+title: "Bloque 3 - Seminario de Aplicacion"
+---
+
+## ¿De qué se trata este curso?
+
+Este curso está pensado para [personas](personas.html) que ya tienen algunos conocimientos de teledetección y quieren empezar a usar lo desde R. Tienen algo de experiencia utilizando R o algún otro lenguaje de programación pero buscan organizar mejor su trabajo y generar resultados e informes para compartir.
+
+Proponemos trabajar con R de forma ordenada y reproducible. Por ello, presentamos un flujo de trabajo que permite a quienes realicen este curso aplicar buenas prácticas de programación, trabajar de forma colaborativa y presentar su trabajo en un único documento que incluya el análisis y los resultados.
+
+Veremos conceptos básicos de datos espaciales, los paquetes disponibles en R para trabajar con este tipo de datos y nos enfocaremos en el paquete rgee para el uso de Google Earth Engine desde R. 
+
+En cada sección incluimos actividades junto con ejemplos. Queremos que estos ejercicios sean realistas para que cualquiera pueda encontrar similitudes en sus propios datos y pueda aplicar lo aprendido a otras situaciones.
+
+
+## Antes de empezar
+
+### Paquetes de R para trabajar con datos espaciales
+
+Vas a tener que instalar una serie de paquetes que te permiten trabajar con datos espaciales.
+
+
+#### Paquetes para trabajo con datos espaciales: r-spatial
+
+```r
+install.packages("sf") # para trabajar con datos vectoriales 
+install.packages("terra") # para trabajar con datos raster.
+```
+
+#### RStudio Cloud
+
+Si no pudiste instalar R y RStudio, podés [usar este proyecto de RStudio Cloud](https://rstudio.cloud/content/4484815) para la primera parte del taller.
+
+
+## Slides
+
+Las slides que acompañan al curso [se pueden acceder desde este link](https://docs.google.com/presentation/d/1Hv_KQVp0KWOohidwdeFk0VETSuH81eJ5I8IgDgKWImM/edit?usp=sharing)
+
+## ¿Quién soy? 
+
+**Yanina Bellini Saibene**
+
+<img src="img/yani_circle.png" alt="Foto de Yani" width="100" height="100" align="left" style="margin:10px"/>
+
+__En breve:__ 
+
+[rOpenSci](https://ropensci.org/) Community Manager.
+[R-Ladies](https://rladies.org/) Project Lead.
+Profesora en diversas universidades en Argentina
+
+Co-fundadora de [LatinR](https://latin-r.com/) y [R-Ladies Santa Rosa](https://www.meetup.com/es/rladies-santa-rosa/).
+
+Vicepresidente del Directorio de [The Carpentries](https://carpentries.org/), miembro del [R Consortium Infrastructure Steering Committee](https://www.r-consortium.org/about/governance) y [Sociedad Argentina de Informática (SADIO)](https://www.sadio.org.ar/).
+
+Ganadora del Premio a la innovación tecnológica (2001) del  [CIALP](http://cialp.com.ar/) y del Premio Nacional de Gobierno electrónico (2015 y 2016) por proyectos relacionados a sensores remotos y datos abiertos.  
+
+Investigadora de [INTA](https://www.argentina.gob.ar/inta) (hasta 2022) 
+
+M.S. en Data Mining and Knowledge Management.
+
+[yabellini.netlify.com](https://yabellini.netlify.com/)
+
+
+## Licencia
+
+<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.es_ES"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />
+Todo el material de este curso está bajo la licencia <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.es_ES">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+
+Nos inspiramos y basamos en los siguientes recursos:
+
+* [250 ejemplos de uso de rgee](https://csaybar.github.io/rgee-examples/) por Cesar Aybar  
+* [Handbook de rgee](https://github.com/barja8/Handbook_rgee) por Antony Barja 
+* [Getting started with R and R-spatial](https://bakaniko.github.io/foss4g2022-getting-started-rspatial/) por Nicolas Roelandt and Jakub Nowosad
+* [R para Clima](https://eliocamp.github.io/r-clima/index.html) de Elio Campitelli y Paola Corrales.
+* [Ciencia de Datos para el Turismo](https://yabellini.netlify.app/courses/cd_turismo_2021/) por Yanina Bellini Saibene, Paola Corrales y Elio Campitelli
+* [Procesando datos espaciales con R. Utilizando rgee](https://yabellini.netlify.app/courses/rgee_course/) por Yanina Bellini Saibene

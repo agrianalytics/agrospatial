@@ -1,0 +1,51 @@
+---
+title: "Ecosistema(s) espacial(es) de R"
+output: 
+  html_document:
+    code_download: true
+    highlight: tango
+---
+
+R tiene un ecosistema muy potente para poder realizar tareas de geocomputación, 
+entre las que podemos mencionar:
+
+* Análisis exploratorio de datos (EDA)
+* Procesamiento de datos 
+* Transformación de datos (p. ej., cambio de proyección, cálculos)
+* Visualización de datos (no solo por medio de mapas)
+* Desarrollo de aplicaciones web
+* Desarrollo de software, en forma de funciones o paquetes (por ejemplo, para compartir nuevos métodos)
+
+::: {.alert .alert-info}
+El libro [Geocomputación con R](https://geocompr.github.io/es/) es una muy buena guía para ver en detalle muchas de estas tareas.
+
+La organizacion de GitHub [rspatial](https://github.com/rspatial) y [r-spatial](https://github.com/r-spatial) continenen la mayoria de los paquetes del ambito geografico y de sensoramiento remoto.
+:::
+
+
+Hay muchas maneras de manejar datos geográficos en R, con muchos paquetes en el área. Entre ellos se encuentran:
+
+* [{sf}](https://github.com/r-spatial/sf), [{sp}](https://github.com/edzer/sp), [{terra}](https://github.com/rspatial/terra), [{raster}](https://github.com/rspatial/raster), [{stars}](https://github.com/r-spatial/stars) - clases espaciales
+* [{dplyr}](https://github.com/tidyverse/dplyr), [{rmapshaper}](https://github.com/ateucher/rmapshaper) - procesamiento de tablas de atributos/geometrías
+* [{rnaturalearth}](https://docs.ropensci.org/rnaturalearth/), [{osmdata}](https://docs.ropensci.org/osmdata/), [{rsat}](https://docs.ropensci.org/rsat/), [{MODISTools}](https://docs.ropensci.org/MODISTools/)- descarga de datos espaciales
+* [{rgrass}](https://github.com/rsbivand/rgrass), [{qgisprocess}](https://github.com/paleolimbot/qgisprocess), [{rgee}](https://github.com/r-spatial/rgee) - conexión con otros software de Sistemas de Información Geográfico
+* [{gstat}](https://github.com/r-spatial/gstat), [{mlr3}](https://github.com/mlr-org/mlr3), [{CAST}](https://github.com/HannaMeyer/CAST) - modelado de datos espaciales
+* [{rasterVis}](https://github.com/oscarperpinan/rastervis), [{tmap}](https://github.com/mtennekes/tmap), [{ggplot2}](https://github.com/tidyverse/ggplot2) - visualizaciones estáticas
+* [{leaflet}](https://github.com/rstudio/leaflet), [{mapview}](https://github.com/r-spatial/mapview), [{mapdeck}](https://github.com/SymbolixAU/mapdeck) - visualizaciones interactivas
+* [{spatstat}](http://spatstat.org/), [{spdep}](https://github.com/r-spatial/spdep), [{spatialreg}](https://github.com/r-spatial/spatialreg), [{dismo}](https://github.com/rspatial/dismo), [{landscapemetrics}](https://github.com/r-spatialecology/landscapemetrics), [{RStoolbox}](http://bleutner.github.io/RStoolbox/rstbx-docu/RStoolbox.html), [{rayshader}](https://github.com/tylermorganwall/rayshader), [{gdalcubes}](https://github.com/appelmar/gdalcubes_R), [{sfnetworks}](https://github.com/luukvdmeer/sfnetworks), [{metR}](https://github.com/eliocamp/metR) - diferentes tipos de análisis de datos espaciales
+
+y muchos, muchos paquetes más. 
+
+::: {.alert .alert-info}
+En la vista _Spatial_ de CRAN https://cran.r-project.org/view=Spatial se cuenta con una visión general de las diferentes tareas espaciales que se pueden resolver con R.
+:::
+
+## Tipos de datos
+
+Para trabajar con datos especiales, en general, representamos la información de dos maneras:
+
+* _Vectores:_ la realidad se representa utilizando **puntos**, **líneas** o **polígonos**.
+
+* _Raster:_ la información se representa por medio de grillas o píxeles.
+
+En R contamos con diferentes paquetes para poder trabajar con estos dos formatos.  

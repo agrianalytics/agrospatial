@@ -1,0 +1,71 @@
+---
+title: "Datos raster"
+output: 
+  html_document:
+    code_download: true
+    highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Datos raster
+
+Las imágenes satelitales son en general datos que se presentan en formato raster.  Otros sensores remotos, commo los radares meterologicos, tambien presentan su informacion en formatos raster. 
+
+Actualmente existen muchas plataformas para poder descargar imagenes satelitales sin costo:
+
+* [EarthExplorer](https://earthexplorer.usgs.gov): repositorio de conjuntos de datos de observación de la Tierra de la NASA.
+* [DataSpace](https://dataspace.copernicus.eu): servicio web que da acceso al centro de datos científicos de Copernicus. 
+
+De la primera plataforma descargue la imagen satelital que vamos a usar en esta leccion.
+
+## Leyendo imagenes LANDSAT
+
+Descargue una imagen del 30 de Abril del 2024.  El nombre del archivo contiene el tipo de sensor (LC08), la escena (228085), la fecha (20240423) y la banda (SR_B4).  Cada banda se descarga en un archivo .TIF diferente. 
+
+Queremos leer las bandas para calcular el Índice de vegetación de diferencia normalizada (NDVI).
+
+El (NDVI) es uno de los índices más utilizado para estimar la cantidad, calidad y desarrollo de la vegetación con base a la medición de la intensidad de la radiación de ciertas bandas del espectro electromagnético que la vegetación emite o refleja.
+
+Como utilizamos datos del Landsat 8, entonces la fórmula será: 
+
+**NDVI = (Banda 5 – Banda 4)/(Banda 5 + Banda 4)**
+
+donde la Banda 5 y la Banda 4 representan las ondas rojas (0,64-0,67 micrómetros) y las ondas del infrarrojo cercano o NIR (0,85-0,88 micrómetros), respectivamente.
+
+Usamos la funcion `rast` del paquete terra para leer las bandas. 
+
+```{r}
+library(terra)
+
+red_file <- "datos/landsat/LC08_L2SP_228085_20240423_20240430_02_T1_SR_B4.TIF"
+nir_file <- "datos/landsat/LC08_L2SP_228085_20240423_20240430_02_T1_SR_B5.TIF"
+
+red <- rast(red_file)
+nir <- rast(nir_file)
+
+ndvi <- (nir - red) / (nir + red)
+```
+
+El calculo se realiza como cualquier otra operacion aritmetica en R.
+
+Ahora que hicimos el calculo vamos a graficar el resultado.  Para esto generamos una paleta de colores con rojo, amarillo y verde, como se representa generalmente este producto y lo graficamos utilizando la funcion `plot` de r base.
+
+Si quieramos graficarlo con ggplot deberiamos transformar el raster a un objeto sf. 
+
+```{r}
+ndvi_colors <- colorRampPalette(c("red", "yellow", "green"))(100)
+
+plot(ndvi, col = ndvi_colors, main = "Mapa de NDVI de la imagen Landsat")
+
+```
+
+Finalmente guardamos la imagen procesada con el NDVI calculoda, para utilizarla en R o en otro software sistemas de informacion geografico.
+
+```{r eval=FALSE}
+writeRaster(ndvi, "datos/landsat/ndvi.tif")
+
+```
+

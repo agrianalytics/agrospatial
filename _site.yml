@@ -1,0 +1,21 @@
+navbar:
+  title: "Trabajo con datos espaciales en R"
+  left:
+     - text: Temas
+       menu:
+        - text: Ecosistema espacial
+          href: 01-r-spatial.html
+        - text: Trabajando con vectores
+          href: 02-r-vectores.html
+        - text: Trabajando con raster
+          href: 03-r-rasters.html
+  right:
+    - text: Repo
+      href: https://github.com/agrianalytics/agrospatial/
+output_dir: "docs"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    theme: flatly
+
