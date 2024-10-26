@@ -1,0 +1,50 @@
+---
+title: "raster"
+output: html_document
+date: "2024-10-19"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Calculo NDVI
+
+NDVI = (Banda5-Banda4)/(Banda5+Banda4)
+
+```{r}
+library(terra)
+
+red <- rast("datos/landsat/LC08_L2SP_228085_20240423_20240430_02_T1_SR_B4.TIF")
+nir <- rast("datos/landsat/LC08_L2SP_228085_20240423_20240430_02_T1_SR_B5.TIF")
+
+ndvi <- (nir - red) / (nir + red)
+
+plot(ndvi)
+
+ndvi_colors <- colorRampPalette(c("red", "yellow", "green"))(100)
+
+plot(ndvi, col = ndvi_colors, main = "NDVI Imagen Landsat 8")
+
+```
+
+```{r}
+writeRaster(ndvi, "datos/landsat/ndvi.tif")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

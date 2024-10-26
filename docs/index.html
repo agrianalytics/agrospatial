@@ -334,6 +334,9 @@ div.tocify {
     <li>
       <a href="03-r-rasters.html">Trabajando con raster</a>
     </li>
+    <li>
+      <a href="04-tidymodels.html">Tidymodels</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -355,45 +358,63 @@ div.tocify {
 </div>
 
 
-<div id="de-qué-se-trata-este-curso" class="section level2">
-<h2>¿De qué se trata este curso?</h2>
-<p>Este curso está pensado para <a href="personas.html">personas</a> que
-ya tienen algunos conocimientos de teledetección y quieren empezar a
-usar lo desde R. Tienen algo de experiencia utilizando R o algún otro
-lenguaje de programación pero buscan organizar mejor su trabajo y
-generar resultados e informes para compartir.</p>
-<p>Proponemos trabajar con R de forma ordenada y reproducible. Por ello,
-presentamos un flujo de trabajo que permite a quienes realicen este
-curso aplicar buenas prácticas de programación, trabajar de forma
-colaborativa y presentar su trabajo en un único documento que incluya el
-análisis y los resultados.</p>
-<p>Veremos conceptos básicos de datos espaciales, los paquetes
-disponibles en R para trabajar con este tipo de datos y nos enfocaremos
-en el paquete rgee para el uso de Google Earth Engine desde R.</p>
+<div id="de-que-se-trata-este-curso" class="section level2">
+<h2>De que se trata este curso?</h2>
+<p>Este bloque presenta aplicaciones practicas en R para modelado de
+datos y manejo de informacion geoespacial.</p>
+<p>La primera parte se introduce tidymodels y en la segunda el
+ecosistema espacial en R. Proponemos trabajar con R de forma ordenada y
+reproducible. Por ello, presentamos un flujo de trabajo que permite a
+quienes realicen este curso aplicar buenas prácticas de programación,
+trabajar de forma colaborativa y presentar su trabajo en un único
+documento que incluya el análisis y los resultados.</p>
 <p>En cada sección incluimos actividades junto con ejemplos. Queremos
 que estos ejercicios sean realistas para que cualquiera pueda encontrar
 similitudes en sus propios datos y pueda aplicar lo aprendido a otras
 situaciones.</p>
 </div>
+<div id="modelado-de-datos" class="section level2">
+<h2>Modelado de datos</h2>
+<p>Este bloque está pensado para <a href="personas.html">personas</a>
+que ya tienen algunos conocimientos entrenamiento de modelos de
+aprendizaje automatico o mineria de datos y que quieren empezar a usarlo
+desde R. Tienen algo de experiencia utilizando R o algún otro lenguaje
+de programación pero buscan organizar mejor su trabajo y generar
+resultados e informes para compartir.</p>
+<p>Veremos conceptos basicos del proceso de entrenar modelos y nos
+enfocremos en el conjunto de paquetes de tidymodels.</p>
+</div>
+<div id="datos-espaciales-y-sensoramiento-remoto"
+class="section level2">
+<h2>Datos Espaciales y Sensoramiento Remoto</h2>
+<p>Este bloque está pensado para <a href="personas.html">personas</a>
+que ya tienen algunos conocimientos de teledetección y quieren empezar a
+usarlo desde R. Tienen algo de experiencia utilizando R o algún otro
+lenguaje de programación pero buscan organizar mejor su trabajo y
+generar resultados e informes para compartir.</p>
+<p>Veremos conceptos básicos de datos espaciales, los paquetes
+disponibles en R para trabajar con este tipo de datos y nos enfocaremos
+en el paquete rgee para el uso de Google Earth Engine desde R.</p>
+</div>
 <div id="antes-de-empezar" class="section level2">
 <h2>Antes de empezar</h2>
-<div id="paquetes-de-r-para-trabajar-con-datos-espaciales"
+<p>Vas a tener que instalar una serie de paquetes para ambos bloques del
+seminario.</p>
+<div id="paquetes-para-modelado" class="section level3">
+<h3>Paquetes para modelado</h3>
+<pre class="r"><code>install.packages(&quot;tidymodels&quot;) </code></pre>
+</div>
+<div id="paquetes-para-trabajo-con-datos-espaciales"
 class="section level3">
-<h3>Paquetes de R para trabajar con datos espaciales</h3>
-<p>Vas a tener que instalar una serie de paquetes que te permiten
-trabajar con datos espaciales.</p>
-<div id="paquetes-para-trabajo-con-datos-espaciales-r-spatial"
-class="section level4">
-<h4>Paquetes para trabajo con datos espaciales: r-spatial</h4>
+<h3>Paquetes para trabajo con datos espaciales</h3>
 <pre class="r"><code>install.packages(&quot;sf&quot;) # para trabajar con datos vectoriales 
 install.packages(&quot;terra&quot;) # para trabajar con datos raster.</code></pre>
 </div>
-<div id="rstudio-cloud" class="section level4">
-<h4>RStudio Cloud</h4>
+<div id="rstudio-cloud" class="section level3">
+<h3>RStudio Cloud</h3>
 <p>Si no pudiste instalar R y RStudio, podés <a
 href="https://rstudio.cloud/content/4484815">usar este proyecto de
 RStudio Cloud</a> para la primera parte del taller.</p>
-</div>
 </div>
 </div>
 <div id="slides" class="section level2">
@@ -423,8 +444,6 @@ href="https://www.sadio.org.ar/">Sociedad Argentina de Informática
 href="http://cialp.com.ar/">CIALP</a> y del Premio Nacional de Gobierno
 electrónico (2015 y 2016) por proyectos relacionados a sensores remotos
 y datos abiertos.</p>
-<p>Investigadora de <a href="https://www.argentina.gob.ar/inta">INTA</a>
-(hasta 2022)</p>
 <p>M.S. en Data Mining and Knowledge Management.</p>
 <p><a
 href="https://yabellini.netlify.com/">yabellini.netlify.com</a></p>
