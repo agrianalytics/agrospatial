@@ -1,0 +1,69 @@
+---
+title: "Espacial"
+output: html_document
+date: "2024-10-19"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+estaciones <- read_csv("datos/estaciones_smn.csv")
+```
+
+```{r}
+library(ggplot2)
+ggplot(estaciones, aes(x=lon, y=lat)) +
+  geom_point()
+```
+
+```{r}
+library(rnaturalearth)
+mapa <- ne_countries(country = c("argentina", "uruguay", "chile", "brazil",
+                                 "paraguay", "bolivia"), 
+                     returnclass = "sf")
+
+str(mapa)
+```
+
+```{r}
+ggplot(mapa) +
+  geom_sf() +
+  geom_point(data = estaciones, mapping = aes(lon,lat))
+```
+
+```{r}
+library(terra)
+library(sf)
+
+suelos <- vect("datos/suelos_argentina_1_500")
+
+suelos_atlas <- st_as_sf(suelos)
+```
+
+```{r}
+ggplot(suelos_atlas) +
+  geom_sf(aes(fill = orden_sue3)) +
+  coord_sf(ylim = c(-40,-50), xlim = c(-70, -65)) +
+  theme_minimal() +
+  labs(title = "Tipo de suelos de Argentina",
+       fill = "Tipo de suelos",
+       x = "Longitud",
+       y = "Latitud")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
