@@ -1,0 +1,37 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - "*.qmd"
+    - "*.Rmd"
+    - "!ejemplos/"
+website:
+  navbar:
+    title: "Aplicaciones en agro 3"
+    left:
+       - text: Datos Espaciales
+         menu:
+          - text: Ecosistema espacial
+            href: 01-r-spatial.html
+          - text: Trabajando con vectores
+            href: 02-r-vectores.html
+          - text: Trabajando con raster
+            href: 03-r-rasters.html
+       - text: Tidymodels
+         menu:
+          - text: Materiales
+            href: 04-tidymodels.html
+          - text: Presentación
+            href: slides.html
+          - text: Ejercicios
+            href: 05-ejercicio1.html
+    right:
+      - icon: github
+        href: https://github.com/agrianalytics/agrospatial/
+        aria-label: GitHub
+format:
+  html:
+    toc: true
+    toc_float: true
+    theme: flatly
+
