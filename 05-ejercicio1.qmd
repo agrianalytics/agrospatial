@@ -1,0 +1,51 @@
+---
+title: "Ejercicios"
+format: 
+  html:
+    code_download: true
+    highlight: tango
+webr: 
+  packages: ['tidymodels', 'tidyverse'] # Install R packages on document open
+  cell-options:
+    autorun: true
+filters:
+  - webr  
+---
+
+Una vez que se instalen y carguen los paquetes, tendrás todo listo para empezar a trabajar en los ejercicios. 
+
+```{webr-r}
+#| context: setup
+library(tidymodels)
+library(tidyverse)
+
+cultivos <- read_csv("https://raw.githubusercontent.com/paocorrales/intro-tidymodels-agro/main/datos/cultivos.csv")
+```
+
+```{webr-r}
+#| autorun: false
+
+set.seed(91)
+cultivos_split <- initial_split(cultivos, 
+                           prop = 3/4)
+cultivos_train <- training(cultivos_split)
+cultivos_test <- testing(cultivos_split)
+
+receta_aceite <- 
+  recipe(aceite_porcentaje ~ ., data = cultivos_train) %>% 
+  step_dummy(all_factor_predictors()) %>% 
+  step_zv(all_predictors()) %>% 
+  step_interact(~ starts_with("densidad_sem"):starts_with("tipo_siembra")) %>% 
+  step_normalize(all_numeric_predictors())
+```
+
+En la clase usamos `"lm"` como *engine* o implementación del modelo lineal, pero hay otras implementaciones. Probá usando una distinta (completá con el nombre reemplazando los `_____`) y compará con el resultado que obtuvimos previamente. ¿Hay alguna diferencia? ¿La documentación menciona alguna diferencia respecto de otras implementaciones?
+
+```{webr-r}
+#| autorun: false
+
+modelo_lineal <- 
+  linear_reg() %>% 
+  set_engine(_______)
+```
+
