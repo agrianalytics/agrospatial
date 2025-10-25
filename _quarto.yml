@@ -4,6 +4,7 @@ project:
   render:
     - "*.qmd"
     - "*.Rmd"
+    - "personas.md"
     - "!ejemplos/"
 website:
   navbar:
@@ -34,4 +35,3 @@ format:
     toc: true
     toc_float: true
     theme: flatly
-

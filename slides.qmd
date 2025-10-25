@@ -73,4 +73,123 @@ cultivos %>%
 ```
 
 
+## El paso a paso
+
+::: {.fragment}
+
+**El presupuesto de datos**
+
+```{r}
+#| echo: true
+#| output: false
+set.seed(91)
+cultivos_split <- initial_split(cultivos, 
+                           prop = 3/4)
+
+cultivos_train <- training(cultivos_split)
+cultivos_test <- testing(cultivos_split)
+```
+
+:::
+
+::: {.fragment}
+
+**La receta:** preparación de los datos
+
+```{r}
+#| echo: true
+#| output: false
+receta_aceite <- 
+  recipe(aceite_porcentaje ~ ., data = cultivos_train) %>% 
+  step_dummy(all_factor_predictors()) %>% 
+  step_zv(all_predictors()) %>% 
+  step_interact(~ starts_with("densidad_sem"):starts_with("tipo_siembra")) %>% 
+  step_normalize(all_numeric_predictors())
+```
+
+:::
+
+::: {.fragment}
+
+**El modelo**
+
+```{r}
+#| echo: true
+#| output: false
+modelo_lineal <- 
+  linear_reg() %>% 
+  set_engine("lm")
+```
+
+:::
+
+##
+
+::: {.fragment}
+
+**El workflow**
+
+```{r}
+#| echo: true
+#| output: false
+wflow_lm <- 
+  workflow() %>% 
+  add_model(modelo_lineal) %>% 
+  add_recipe(receta_aceite)
+```
+
+:::
+
+::: {.fragment}
+
+**"Entrenamos el modelo"**
+
+```{r}
+#| echo: true
+#| output: false
+modelo_fit <- fit(wflow_lm, data = cultivos_train)
+```
+
+:::
+
+::: {.fragment}
+
+**El modelo hace predicciones**
+
+
+```{r}
+#| echo: true
+#| output: false
+mean_predict <- predict(modelo_fit, new_data = cultivos_test) 
+```
+
+:::
+
+##
+
+
+
+```{r}
+#| echo: true
+#| output: true
+aceite_predic <- 
+  cultivos_test %>% 
+  bind_cols(mean_predict) 
+
+ggplot(aceite_predic, aes(aceite_porcentaje, .pred)) +
+  geom_abline(slope = 1, intercept = 0, color = "darkorange") +
+      geom_point(alpha = 0.1) +
+  geom_smooth(method = "lm") +
+  labs(x = "Observado", y = "Predicho") +
+  coord_equal(xlim = c(29,60), ylim = c(29, 60))
+```
+
+
+
+```{r}
+#| echo: true
+#| output: true
+rmse(aceite_predic, aceite_porcentaje, .pred)$.estimate #Error cuadrático medio
+```
+
 

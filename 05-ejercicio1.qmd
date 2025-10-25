@@ -5,7 +5,7 @@ format:
     code_download: true
     highlight: tango
 webr: 
-  packages: ['tidymodels', 'tidyverse'] # Install R packages on document open
+  packages: ['tidymodels', 'dplyr', 'ggplot2', 'ranger'] # Install R packages on document open
   cell-options:
     autorun: true
 filters:
@@ -17,13 +17,24 @@ Una vez que se instalen y carguen los paquetes, tendrás todo listo para empezar
 ```{webr-r}
 #| context: setup
 library(tidymodels)
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 
-cultivos <- read_csv("https://raw.githubusercontent.com/paocorrales/intro-tidymodels-agro/main/datos/cultivos.csv")
 ```
+
+Pero si por alguna razon queres instalar un paquete nuevo, podés usar el siguiente bloque de código.
+
+```{webr-r}
+
+```
+
+
+## Ejercicio 1: otros modelos
 
 ```{webr-r}
 #| autorun: false
+
+cultivos <- read_csv("https://raw.githubusercontent.com/paocorrales/intro-tidymodels-agro/main/datos/cultivos.csv")
 
 set.seed(91)
 cultivos_split <- initial_split(cultivos, 
@@ -39,13 +50,90 @@ receta_aceite <-
   step_normalize(all_numeric_predictors())
 ```
 
-En la clase usamos `"lm"` como *engine* o implementación del modelo lineal, pero hay otras implementaciones. Probá usando una distinta (completá con el nombre reemplazando los `_____`) y compará con el resultado que obtuvimos previamente. ¿Hay alguna diferencia? ¿La documentación menciona alguna diferencia respecto de otras implementaciones?
+En la clase usamos el modelo lineal, es simple pero sirve como una primera buena aproximación al problema. Hay muchos otros modelos implementados como parte de parsnip. Uno de ellos es Random Forest (o árboles de decición), con la función `rand_forest()`. Y si bien son usados principalmente para problemas de clasificación también es posible predecir en el modo "regression". 
+
+La tarea es completar el siguiente código y correr todos los pasos para entrenar el modelo y hacer predicciones. Tendrán que consultar la documentación de `rand_forest()` para determinar el modo y el engine y reemplazar los `_______`. 
+
 
 ```{webr-r}
 #| autorun: false
 
+modelo <- rand_forest(mode = _________) %>% 
+  set_engine(________)
+```
+
+
+```{webr-r}
+#| autorun: false
+
+wflow_lm <- 
+  workflow() %>% 
+  add_model(modelo) %>% 
+  add_recipe(receta_aceite)
+
+modelo_fit <- fit(wflow_lm, data = cultivos_train)
+mean_predict <- predict(modelo_fit, new_data = cultivos_test) 
+
+aceite_predic <- 
+  cultivos_test %>% 
+  bind_cols(mean_predict) 
+```
+
+¿Cambia el RMSE?
+
+```{webr-r}
+#| autorun: false
+rmse(aceite_predic, aceite_porcentaje, .pred)$.estimate
+```
+
+
+## Ejercicio 2: variables predictoras
+
+```{webr-r}
+#| autorun: false
+
+cultivos <- read_csv("https://raw.githubusercontent.com/paocorrales/intro-tidymodels-agro/main/datos/cultivos.csv")
+
+set.seed(91)
+cultivos_split <- initial_split(cultivos, 
+                           prop = 3/4)
+cultivos_train <- training(cultivos_split)
+cultivos_test <- testing(cultivos_split)
+```
+
+En la clase usamos entrenar el modelo usando todas las variables disponibles en el set de datos. Pero es posible que no todas aporten a una buena prendicción. Probá usando distintas variables predictoras (completá con los nombres reemplazando los `_____`) y compará con el resultado que obtuvimos previamente. ¿Hay alguna diferencia?
+
+```{webr-r}
+#| autorun: false
+#| 
+receta_aceite <- 
+  recipe(aceite_porcentaje ~ ________, data = cultivos_train) %>% 
+  step_dummy(all_factor_predictors()) %>% 
+  step_zv(all_predictors()) %>% 
+  step_normalize(all_numeric_predictors())
+
 modelo_lineal <- 
   linear_reg() %>% 
-  set_engine(_______)
+  set_engine("lm")
+
+wflow_lm <- 
+  workflow() %>% 
+  add_model(modelo_lineal) %>% 
+  add_recipe(receta_aceite)
+
+modelo_fit <- fit(wflow_lm, data = cultivos_train)
+mean_predict <- predict(modelo_fit, new_data = cultivos_test) 
+
+aceite_predic <- 
+  cultivos_test %>% 
+  bind_cols(mean_predict) 
 ```
+
+¿Cambia el RMSE?
+
+```{webr-r}
+#| autorun: false
+rmse(aceite_predic, aceite_porcentaje, .pred)$.estimate
+```
+
 
