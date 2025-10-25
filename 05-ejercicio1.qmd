@@ -5,7 +5,7 @@ format:
     code_download: true
     highlight: tango
 webr: 
-  packages: ['tidymodels', 'dplyr', 'ggplot2', 'ranger'] # Install R packages on document open
+  packages: ['tidymodels', 'dplyr', 'ggplot2', 'readr', 'ranger'] # Install R packages on document open
   cell-options:
     autorun: true
 filters:
@@ -34,7 +34,7 @@ Pero si por alguna razon queres instalar un paquete nuevo, podés usar el siguie
 ```{webr-r}
 #| autorun: false
 
-cultivos <- read_csv("https://raw.githubusercontent.com/paocorrales/intro-tidymodels-agro/main/datos/cultivos.csv")
+cultivos <- readr::read_csv("https://raw.githubusercontent.com/paocorrales/intro-tidymodels-agro/main/datos/cultivos.csv")
 
 set.seed(91)
 cultivos_split <- initial_split(cultivos, 
@@ -86,6 +86,7 @@ aceite_predic <-
 rmse(aceite_predic, aceite_porcentaje, .pred)$.estimate
 ```
 
+---
 
 ## Ejercicio 2: variables predictoras
 
